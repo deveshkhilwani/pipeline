@@ -26,10 +26,7 @@ package components is
 			equal_flag: out std_logic
 			);
     end component;
-    component adder is
-       port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
-    end component;
-
+    
 --<<<<<<< HEAD
     component data_forwarding_block is
         port(
@@ -115,6 +112,98 @@ package components is
         --control signals
         RF_write: in std_logic
         --rout_0,rout_1,rout_2,rout_3,rout_4,rout_5,rout_6,rout_7: out std_logic_vector(15 downto 0)
+        );
+    end component;
+
+    component adder is
+        port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
+    end component;
+
+    component sign_ext6 is
+       port(x: in std_logic_vector(5 downto 0);
+        y: out std_logic_vector(15 downto 0));
+    end component;
+
+   component sign_ext9 is
+       port(x: in std_logic_vector(8 downto 0);
+        y: out std_logic_vector(15 downto 0));
+    end component;
+
+    component Decoder is
+    port(
+        instruction_word: in std_logic_vector(15 downto 0);
+        control_word: out std_logic_vector(19 downto 0); 
+        Rs1: out std_logic_vector(2 downto 0); 
+        Rs2: out std_logic_vector(2 downto 0); 
+        Rd: out std_logic_vector(2 downto 0)
+    );
+    end component;
+
+    component special_pe is
+   port(input0: in std_logic_vector(7 downto 0);
+        input_sel,clk: in std_logic;
+
+    output0: out std_logic_vector(7 downto 0);
+    Rsel: out std_logic_vector(2 downto 0);
+    flag: out std_logic);
+    end component;
+
+    component I_Fetch is 
+        port(
+            PC_MUX2_sel: in std_logic; --select signal for 2to1 MUX
+            PC_MUX1_sel: in std_logic_vector(1 downto 0); --select signal of 4to1 MUX
+            R7_ID: in std_logic_vector(15 downto 0);
+            R7_RR: in std_logic_vector(15 downto 0);
+            R7_EX: in std_logic_vector(15 downto 0);
+            R7_MEM: in std_logic_vector(15 downto 0);
+            PC_plus1: out std_logic_vector(15 downto 0);
+            PC: out std_logic_vector(15 downto 0);
+            IW: out std_logic_vector(15 downto 0);
+            clk: in std_logic;
+            reset: in std_logic
+            );
+    end component;
+
+
+    component EX is    
+        port(
+            Rs1, Rs2: in std_logic_vector(15 downto 0);
+            SE_6: in std_logic_vector(15 downto 0);
+            alu_a_sel, alu_b_sel: in std_logic;
+            alu_op: in std_logic_vector(1 downto 0);
+            alu_out: out std_logic_vector(15 downto 0);
+            flag_out: out std_logic_vector(1 downto 0);
+            clk: in std_logic;
+            reset: in std_logic
+            );
+    end component;
+
+
+    component MEM is 
+        port(
+            Rs1: in std_logic_vector(15 downto 0);
+            mem_address_sel: in std_logic;
+            RA_plus_n: in std_logic_vector(15 downto 0); --for LM, SM
+            alu_out: in std_logic_vector(15 downto 0);
+            mem_write: in std_logic;
+            mem_out: out std_logic;
+            clk: in std_logic;
+            reset: in std_logic
+            );
+    end component;
+
+    component WB is 
+        port(
+            Rd: in std_logic_vector(2 downto 0);
+            wb_address_sel: in std_logic_vector(1 downto 0);
+            mem_out: in std_logic_vector(15 downto 0); --for LM, SM
+            alu_out: in std_logic_vector(15 downto 0); --arithmetic instructions
+            shifter_out: in std_logic_vector(15 downto 0);
+            flag_out: in std_logic_vector(1 downto 0);
+            RF_write: in std_logic;
+            flag_write: in std_logic;
+            clk: in std_logic;
+            reset: in std_logic
         );
     end component;
 
