@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity mux_2to1 is
   port (
-	input1: in std_logic_vector(15 downto 0) ;
-	input0: in std_logic_vector(15 downto 0) ;
+	input1: in std_logic_vector(15 downto 0) ;		--selct is '1'
+	input0: in std_logic_vector(15 downto 0) ;		--selct is '0'
 	output0: out std_logic_vector(15 downto 0) ;
 	select_signal: in std_logic
   ) ;

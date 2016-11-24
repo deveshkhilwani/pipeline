@@ -30,7 +30,11 @@ mem_to_pe <= mem_compare and mem_RF_write;
 c3: comparator3 port map (x=>wb_destination_reg_address, y=>source_reg_address, equal_flag=>wb_compare);
 wb_to_pe <= wb_compare and wb_RF_write;
 
-pe: priority_encoder_4to2 port map (x(3)=>ex_to_pe, x(2)=>mem_to_pe, x(1)=>wb_to_pe, x(0)=>'1', y=>data_select(1 downto 0));
+pe: priority_encoder_4to2 port map (x(3)=>ex_to_pe,			--output is "11" 
+									x(2)=>mem_to_pe, 		--output is "10"
+									x(1)=>wb_to_pe, 		--output is "01"
+									x(0)=>'1', 				--output is "00" when no forwarding needed
+									y=>data_select(1 downto 0));
 data_select(2) <= source_reg_address(0) and source_reg_address(1) and source_reg_address(2);
 
 

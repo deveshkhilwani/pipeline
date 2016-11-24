@@ -26,6 +26,9 @@ package components is
 			equal_flag: out std_logic
 			);
     end component;
+    component adder is
+       port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
+    end component;
 
 --<<<<<<< HEAD
     component data_forwarding_block is
