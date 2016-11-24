@@ -33,18 +33,9 @@ i1: comparator5 port map(x(4)=>instruction_word(15), x(3)=>instruction_word(14),
 
 stall<=((source1_compare or source2_compare) and (isLW or isLM)) or (isANZ and isLW);
 
-ex_to_pe <= ex_compare and ex_RF_write;
 
-mem_compare <= (source_reg_address(0) xnor mem_destination_reg_address(0)) and (source_reg_address(1) 
-				xnor mem_destination_reg_address(1)) and (source_reg_address(2) xnor mem_destination_reg_address(2));
-mem_to_pe <= mem_compare and mem_RF_write;
-
-wb_compare <= (source_reg_address(0) xnor wb_destination_reg_address(0)) and (source_reg_address(1) xnor wb_destination_reg_address(1))
-				and (source_reg_address(2) xnor wb_destination_reg_address(2));
-wb_to_pe <= wb_compare and wb_RF_write;
-
-pe: priority_encoder_4to2 port map (x(3)=>ex_to_pe, x(2)=>mem_to_pe, x(1)=>wb_to_pe, x(0)=>'1', y=>data_select(1 downto 0));
-data_select(2) <= source_reg_address(0) and source_reg_address(1) and source_reg_address(2);
-
+R7_en<= not stall;
+IF_ID_en<= not stall;
+NOP_mux_sel<= not stall;  --if NOP_MUX_sel = 0, RW,FW,MW = 000; 
 
 end arch ; -- arch
