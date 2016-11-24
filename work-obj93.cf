@@ -11,22 +11,22 @@ file . "mux_4to1.vhd" "20161124103701.000" "20161124161942.172":
 file . "HDU_Data.vhd" "20161124103701.000" "20161124161942.104":
   entity hdu_data at 1( 0) + 0 on 103;
   architecture arch of hdu_data at 20( 479) + 0 on 104;
-file . "data_forwarding_block.vhd" "20161124103701.000" "20161124161941.964":
-  entity data_forwarding_block at 1( 0) + 0 on 97;
-  architecture arch of data_forwarding_block at 19( 518) + 0 on 98;
-file . "comparator.vhd" "20161124103701.000" "20161124161941.908":
-  entity comparator3 at 1( 0) + 0 on 92;
-  architecture arch of comparator3 at 14( 230) + 0 on 93;
-  entity comparator5 at 21( 374) + 0 on 94;
-  architecture arch of comparator5 at 34( 604) + 0 on 95;
-file . "components.vhd" "20161124104938.000" "20161124161941.940":
-  package components at 1( 0) + 0 on 96;
-file . "adder.vhd" "20161124103701.000" "20161124161941.878":
-  entity adder at 1( 0) + 0 on 90;
-  architecture serial of adder at 6( 158) + 0 on 91;
-file . "DataRegister.vhd" "20161124103701.000" "20161124161942.001":
-  entity dataregister at 1( 0) + 0 on 99;
-  architecture behave of dataregister at 9( 258) + 0 on 100;
+file . "data_forwarding_block.vhd" "20161124103701.000" "20161124162627.980":
+  entity data_forwarding_block at 1( 0) + 0 on 127;
+  architecture arch of data_forwarding_block at 19( 518) + 0 on 128;
+file . "comparator.vhd" "20161124103701.000" "20161124162627.927":
+  entity comparator3 at 1( 0) + 0 on 122;
+  architecture arch of comparator3 at 14( 230) + 0 on 123;
+  entity comparator5 at 21( 374) + 0 on 124;
+  architecture arch of comparator5 at 34( 604) + 0 on 125;
+file . "components.vhd" "20161124105620.000" "20161124162627.958":
+  package components at 1( 0) + 0 on 126;
+file . "adder.vhd" "20161124103701.000" "20161124162627.898":
+  entity adder at 1( 0) + 0 on 120;
+  architecture serial of adder at 6( 158) + 0 on 121;
+file . "DataRegister.vhd" "20161124103701.000" "20161124162628.018":
+  entity dataregister at 1( 0) + 0 on 129;
+  architecture behave of dataregister at 9( 258) + 0 on 130;
 file . "HDU_Control.vhd" "20161124104833.000" "20161124161942.026":
   entity hdu_control at 1( 0) + 0 on 101;
   architecture arch of hdu_control at 18( 421) + 0 on 102;

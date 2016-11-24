@@ -97,6 +97,11 @@ package components is
     component RF_decoder is
        port (x: in std_logic_vector(2 downto 0); y: out std_logic_vector(6 downto 0));
     end component;
+    component shift7 is
+       port(x: in std_logic_vector(8 downto 0);
+        y: out std_logic_vector(15 downto 0));
+    end component;
+
 
 -->>>>>>> 8df1c7e9c6625a725a0285da5631555be69d8172
 
