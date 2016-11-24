@@ -23,10 +23,10 @@ architecture arch of HDU_Control is
 
 begin
 --data hazard stalls
-c1: comparator3 port map (x=>ID_R7d, y=>001, equal_flag=>fwd_from_ID);
-c2: comparator3 port map (x=>RR_R7d, y=>010, equal_flag=>fwd_from_RR);
-c3: comparator3 port map (x=>EX_R7d, y=>011, equal_flag=>fwd_from_EX);
-c4: comparator3 port map (x=>MEM_R7d, y=>100, equal_flag=>fwd_from_MEM);
+c1: comparator3 port map (x=>ID_R7d, y=>"001", equal_flag=>fwd_from_ID);
+c2: comparator3 port map (x=>RR_R7d, y=>"010", equal_flag=>fwd_from_RR);
+c3: comparator3 port map (x=>EX_R7d, y=>"011", equal_flag=>fwd_from_EX);
+c4: comparator3 port map (x=>MEM_R7d, y=>"100", equal_flag=>fwd_from_MEM);
 
 
 control_hazard<=fwd_from_MEM or fwd_from_EX or fwd_from_RR or fwd_from_ID; 
@@ -40,7 +40,10 @@ flush_assign_signal<="1111" when (R7_fwd = "11")
 			else "1100" when (R7_fwd = "01")
 			else "1000" when (R7_fwd = "00");
 
-flush_assign<=control_hazard and flush_assign_signal;
+flush_assign(0)<=control_hazard and flush_assign_signal(0);
+flush_assign(1)<=control_hazard and flush_assign_signal(1);
+flush_assign(2)<=control_hazard and flush_assign_signal(2);
+flush_assign(3)<=control_hazard and flush_assign_signal(3);
 --Conventions used:
 --flush = 1 means "FLUSH"
 --if R7_fwd = 11 then forward from MEM
