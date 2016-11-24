@@ -1,0 +1,2 @@
+2 length is 2 inputs are 10 of length 201 0 required value is 10 obtained value is 10
+4 length is 2 inputs are 00 of length 211 1 required value is 11 obtained value is 11

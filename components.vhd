@@ -118,6 +118,13 @@ package components is
     component adder is
         port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
     end component;
+    component xorer is
+       port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
+    end component;
+    component nander is
+       port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
+    end component;
+
 
     component sign_ext6 is
        port(x: in std_logic_vector(5 downto 0);

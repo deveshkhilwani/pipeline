@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity mux_2to1 is
+entity generic_mux_2to1 is
 generic(data_width:integer);
   port (
 	input1: in std_logic_vector(data_width-1 downto 0) ;		--selct is '1'
@@ -11,7 +11,7 @@ generic(data_width:integer);
   ) ;
 end entity ; -- mux_4to1
 
-architecture arch of mux_2to1 is
+architecture arch of generic_mux_2to1 is
 
 
 begin
