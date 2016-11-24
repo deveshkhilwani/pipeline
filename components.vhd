@@ -27,6 +27,7 @@ package components is
 			);
     end component;
 
+<<<<<<< HEAD
     component data_forwarding_block is
         port(
             source_reg_address: in std_logic_vector(2 downto 0) ;
@@ -67,6 +68,33 @@ package components is
     end component;
 
 
+=======
+    component DataRegister is
+        generic (data_width:integer);
+        port (Din: in std_logic_vector(data_width-1 downto 0);
+              Dout: out std_logic_vector(data_width-1 downto 0);
+              clk, enable: in std_logic);
+    end component;
+
+    component mux_4to1 is
+      port (
+        input1: in std_logic_vector(15 downto 0) ;
+        input2: in std_logic_vector(15 downto 0) ;
+        input3: in std_logic_vector(15 downto 0) ;
+        input0: in std_logic_vector(15 downto 0) ;
+        output0: out std_logic_vector(15 downto 0) ;
+        select_signal: out std_logic_vector(1 downto 0)
+      ) ;
+    end component ; -- mux_4to1
+    component mux_2to1 is
+      port (
+        input1: in std_logic_vector(15 downto 0) ;
+        input0: in std_logic_vector(15 downto 0) ;
+        output0: out std_logic_vector(15 downto 0) ;
+        select_signal: in std_logic
+      ) ;
+    end component ; -- mux_4to1
+>>>>>>> 8df1c7e9c6625a725a0285da5631555be69d8172
 
 
 end package;  -- components 

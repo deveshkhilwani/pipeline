@@ -14,8 +14,14 @@ end entity;
 architecture arch of comparator3 is
 
 begin
-equal_flag<= (x(0)xnor y(0)) and (x(1)xnor y(1)) and (x(2)xnor y(2))  
+equal_flag<= (x(0)xnor y(0)) and (x(1)xnor y(1)) and (x(2)xnor y(2));  
 end architecture ; -- arch
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+library work;
+use work.components.all;
 
 entity comparator5 is
 port(
