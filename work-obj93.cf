@@ -1,44 +1,47 @@
 v 3
-file . "sign_ext9.vhd" "20161124103701.000" "20161124161942.402":
-  entity sign_ext9 at 1( 0) + 0 on 117;
-  architecture taes of sign_ext9 at 8( 160) + 0 on 118;
-file . "RF_decoder.vhd" "20161124104925.000" "20161124161942.338":
-  entity rf_decoder at 1( 0) + 0 on 113;
-  architecture hood of rf_decoder at 7( 160) + 0 on 114;
-file . "mux_4to1.vhd" "20161124103701.000" "20161124161942.172":
-  entity mux_4to1 at 1( 0) + 0 on 107;
-  architecture arch of mux_4to1 at 15( 374) + 0 on 108;
-file . "HDU_Data.vhd" "20161124103701.000" "20161124161942.104":
-  entity hdu_data at 1( 0) + 0 on 103;
-  architecture arch of hdu_data at 20( 479) + 0 on 104;
-file . "data_forwarding_block.vhd" "20161124103701.000" "20161124162627.980":
-  entity data_forwarding_block at 1( 0) + 0 on 127;
-  architecture arch of data_forwarding_block at 19( 518) + 0 on 128;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/priority_encoder_4to2.vhd" "20161124082130.000" "20161124185725.679":
+  entity priority_encoder_4to2 at 1( 0) + 0 on 134;
+  architecture arch of priority_encoder_4to2 at 13( 213) + 0 on 135;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/components.vhd" "20161124132417.000" "20161124185719.910":
+  package components at 1( 0) + 0 on 131;
+file . "sign_ext6.vhd" "20161124103701.000" "20161124161942.378":
+  entity sign_ext6 at 1( 0) + 0 on 115;
+  architecture taes of sign_ext6 at 8( 160) + 0 on 116;
+file . "reg_file.vhd" "20161124104859.000" "20161124161942.226":
+  entity reg_file at 1( 0) + 0 on 111;
+  architecture mudi of reg_file at 20( 522) + 0 on 112;
+file . "mux_2to1.vhd" "20161124103701.000" "20161124161942.143":
+  entity mux_2to1 at 1( 0) + 0 on 105;
+  architecture arch of mux_2to1 at 13( 267) + 0 on 106;
+file . "HDU_Control.vhd" "20161124104833.000" "20161124161942.026":
+  entity hdu_control at 1( 0) + 0 on 101;
+  architecture arch of hdu_control at 18( 421) + 0 on 102;
+file . "DataRegister.vhd" "20161124103701.000" "20161124162628.018":
+  entity dataregister at 1( 0) + 0 on 129;
+  architecture behave of dataregister at 9( 258) + 0 on 130;
+file . "adder.vhd" "20161124103701.000" "20161124162627.898":
+  entity adder at 1( 0) + 0 on 120;
+  architecture serial of adder at 6( 158) + 0 on 121;
 file . "comparator.vhd" "20161124103701.000" "20161124162627.927":
   entity comparator3 at 1( 0) + 0 on 122;
   architecture arch of comparator3 at 14( 230) + 0 on 123;
   entity comparator5 at 21( 374) + 0 on 124;
   architecture arch of comparator5 at 34( 604) + 0 on 125;
-file . "components.vhd" "20161124105620.000" "20161124162627.958":
-  package components at 1( 0) + 0 on 126;
-file . "adder.vhd" "20161124103701.000" "20161124162627.898":
-  entity adder at 1( 0) + 0 on 120;
-  architecture serial of adder at 6( 158) + 0 on 121;
-file . "DataRegister.vhd" "20161124103701.000" "20161124162628.018":
-  entity dataregister at 1( 0) + 0 on 129;
-  architecture behave of dataregister at 9( 258) + 0 on 130;
-file . "HDU_Control.vhd" "20161124104833.000" "20161124161942.026":
-  entity hdu_control at 1( 0) + 0 on 101;
-  architecture arch of hdu_control at 18( 421) + 0 on 102;
-file . "mux_2to1.vhd" "20161124103701.000" "20161124161942.143":
-  entity mux_2to1 at 1( 0) + 0 on 105;
-  architecture arch of mux_2to1 at 13( 267) + 0 on 106;
-file . "priority_encoder_4to2.vhd" "20161124103701.000" "20161124161942.200":
-  entity priority_encoder_4to2 at 1( 0) + 0 on 109;
-  architecture arch of priority_encoder_4to2 at 13( 213) + 0 on 110;
-file . "reg_file.vhd" "20161124104859.000" "20161124161942.226":
-  entity reg_file at 1( 0) + 0 on 111;
-  architecture mudi of reg_file at 20( 522) + 0 on 112;
-file . "sign_ext6.vhd" "20161124103701.000" "20161124161942.378":
-  entity sign_ext6 at 1( 0) + 0 on 115;
-  architecture taes of sign_ext6 at 8( 160) + 0 on 116;
+file . "data_forwarding_block.vhd" "20161124103701.000" "20161124162627.980":
+  entity data_forwarding_block at 1( 0) + 0 on 127;
+  architecture arch of data_forwarding_block at 19( 518) + 0 on 128;
+file . "HDU_Data.vhd" "20161124103701.000" "20161124161942.104":
+  entity hdu_data at 1( 0) + 0 on 103;
+  architecture arch of hdu_data at 20( 479) + 0 on 104;
+file . "mux_4to1.vhd" "20161124103701.000" "20161124161942.172":
+  entity mux_4to1 at 1( 0) + 0 on 107;
+  architecture arch of mux_4to1 at 15( 374) + 0 on 108;
+file . "RF_decoder.vhd" "20161124104925.000" "20161124161942.338":
+  entity rf_decoder at 1( 0) + 0 on 113;
+  architecture hood of rf_decoder at 7( 160) + 0 on 114;
+file . "sign_ext9.vhd" "20161124103701.000" "20161124161942.402":
+  entity sign_ext9 at 1( 0) + 0 on 117;
+  architecture taes of sign_ext9 at 8( 160) + 0 on 118;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Decoder.vhd" "20161124132713.000" "20161124185722.695":
+  entity decoder at 1( 0) + 0 on 132;
+  architecture arch of decoder at 16( 353) + 0 on 133;
