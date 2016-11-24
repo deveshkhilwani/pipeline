@@ -1,12 +1,20 @@
 v 3
+file . "comparator.vhd" "20161124090531.000" "20161124143534.018":
+  entity comparator3 at 1( 0) + 0 on 65;
+  architecture arch of comparator3 at 14( 230) + 0 on 66;
+  entity comparator5 at 21( 374) + 0 on 67;
+  architecture arch of comparator5 at 34( 604) + 0 on 68;
 file . "pe4_test.vhd" "20161123224047.000" "20161124041051.266":
   entity pe4_test at 1( 0) + 0 on 55;
   architecture behave of pe4_test at 8( 108) + 0 on 56;
-file . "priority_encoder_4to2.vhd" "20161123223113.000" "20161124041419.134":
-  entity priority_encoder_4to2 at 1( 0) + 0 on 62;
-  architecture arch of priority_encoder_4to2 at 13( 213) + 0 on 63;
-file . "components.vhd" "20161123222913.000" "20161124041419.068":
-  package components at 1( 0) + 0 on 59;
-file . "data_forwarding_block.vhd" "20161123224413.000" "20161124041419.089":
-  entity data_forwarding_block at 1( 0) + 0 on 60;
-  architecture arch of data_forwarding_block at 19( 518) + 0 on 61;
+file . "priority_encoder_4to2.vhd" "20161123223113.000" "20161124143534.181":
+  entity priority_encoder_4to2 at 1( 0) + 0 on 74;
+  architecture arch of priority_encoder_4to2 at 13( 213) + 0 on 75;
+file . "components.vhd" "20161124083346.000" "20161124143534.085":
+  package components at 1( 0) + 0 on 69;
+file . "data_forwarding_block.vhd" "20161124085359.000" "20161124143534.103":
+  entity data_forwarding_block at 1( 0) + 0 on 70;
+  architecture arch of data_forwarding_block at 19( 518) + 0 on 71;
+file . "HDU_Data.vhd" "20161124085018.000" "20161124143534.142":
+  entity hdu_data at 1( 0) + 0 on 72;
+  architecture arch of hdu_data at 20( 479) + 0 on 73;
