@@ -3,10 +3,10 @@ use ieee.std_logic_1164.all;
 
 entity mux_4to1 is
   port (
+	input0: in std_logic_vector(15 downto 0) ;--when select signal is "00"
 	input1: in std_logic_vector(15 downto 0) ;--when select signal is "01"
 	input2: in std_logic_vector(15 downto 0) ;--when select signal is "10"
 	input3: in std_logic_vector(15 downto 0) ;--when select signal is "11"
-	input0: in std_logic_vector(15 downto 0) ;--when select signal is "00"
 	output0: out std_logic_vector(15 downto 0) ;
 	select_signal: in std_logic_vector(1 downto 0)
   ) ;

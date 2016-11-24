@@ -78,18 +78,18 @@ package components is
 
     component mux_4to1 is
       port (
+        input0: in std_logic_vector(15 downto 0) ;
         input1: in std_logic_vector(15 downto 0) ;
         input2: in std_logic_vector(15 downto 0) ;
         input3: in std_logic_vector(15 downto 0) ;
-        input0: in std_logic_vector(15 downto 0) ;
         output0: out std_logic_vector(15 downto 0) ;
         select_signal: in std_logic_vector(1 downto 0)
       ) ;
     end component ; -- mux_4to1
     component mux_2to1 is
       port (
-        input1: in std_logic_vector(15 downto 0) ;
         input0: in std_logic_vector(15 downto 0) ;
+        input1: in std_logic_vector(15 downto 0) ;
         output0: out std_logic_vector(15 downto 0) ;
         select_signal: in std_logic
       ) ;
