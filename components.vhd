@@ -86,7 +86,7 @@ package components is
         input3: in std_logic_vector(15 downto 0) ;
         input0: in std_logic_vector(15 downto 0) ;
         output0: out std_logic_vector(15 downto 0) ;
-        select_signal: out std_logic_vector(1 downto 0)
+        select_signal: in std_logic_vector(1 downto 0)
       ) ;
     end component ; -- mux_4to1
     component mux_2to1 is
@@ -103,6 +103,19 @@ package components is
     component shift7 is
        port(x: in std_logic_vector(8 downto 0);
         y: out std_logic_vector(15 downto 0));
+    end component;
+    component reg_file is
+       port(A1: in std_logic_vector(2 downto 0);
+        A2: in std_logic_vector(2 downto 0);
+        A3: in std_logic_vector(2 downto 0);
+        D3: in std_logic_vector(15 downto 0);
+        D1: out std_logic_vector(15 downto 0);
+        D2: out std_logic_vector(15 downto 0);
+        clk,reset: in std_logic;
+        --control signals
+        RF_write: in std_logic
+        --rout_0,rout_1,rout_2,rout_3,rout_4,rout_5,rout_6,rout_7: out std_logic_vector(15 downto 0)
+        );
     end component;
 
 

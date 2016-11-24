@@ -19,14 +19,17 @@ entity RR is
 	is_LMSM: in std_logic ;
 	alu_a_input: out std_logic_vector(15 downto 0) ;
 	alu_b_input: out std_logic_vector(15 downto 0) ;
-	LMSM_address_out: out std_logic_vector(15 downto 0) ;
-	LMSM_address_in: in std_logic_vector(15 downto 0) ;
+	LMSM_memaddress_out: out std_logic_vector(15 downto 0) ;
+	LMSM_memaddress_in: in std_logic_vector(15 downto 0) ;
+	clk,reset: in std_logic
   ) ;
 end entity ; -- RR
 
 architecture arch of RR is
 
-signal d1, d2, to_alu_b_input, temp_input1, temp_input2:std_logic_vector( 15 downto 0);
+signal d1, d2, to_alu_b_input, temp_input1, temp_input2, adder_out:std_logic_vector( 15 downto 0);
+signal registered_is_LMSM: std_logic;
+constant c1: std_logic_vector(15 downto 0):=(0=>'1',others=>'0') ;
 
 begin
 
@@ -62,9 +65,9 @@ alu_b_mux2 : mux_2to1 port map (
 
 alu_b_input <= to_alu_b_input;
 
-LMSM_mux: mux_2to1 port map(input0=>to_alu_a_input, input1=>adder_out, output0=>LMSM_address_out, select_signal=>registered_is_LMSM);
+LMSM_mux: mux_2to1 port map(input0=>to_alu_b_input, input1=>adder_out, output0=>LMSM_memaddress_out, select_signal=>registered_is_LMSM);
 bit_reg: DataRegister generic map(data_width=>1) port map(Din(0)=>is_LMSM , Dout(0)=>registered_is_LMSM , Enable=>'1' , clk=>clk);
-incrementer: 
+incrementer: adder port map (x=>c1, y=>LMSM_memaddress_in, z=>adder_out);
 
 
 end architecture ; -- arch
