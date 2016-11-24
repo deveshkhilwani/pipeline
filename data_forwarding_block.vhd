@@ -21,16 +21,13 @@ architecture arch of data_forwarding_block is
 	signal ex_compare,mem_compare,wb_compare,ex_to_pe,mem_to_pe,wb_to_pe: std_logic;
 
 begin
-ex_compare <= (source_reg_address(0) xnor ex_destination_reg_address(0)) and (source_reg_address(1) xnor ex_destination_reg_address(1))
-				and (source_reg_address(2) xnor ex_destination_reg_address(2));
+c1: comparator3 port map (x=>ex_destination_reg_address, y=>source_reg_address, equal_flag=>ex_compare);
 ex_to_pe <= ex_compare and ex_RF_write;
 
-mem_compare <= (source_reg_address(0) xnor mem_destination_reg_address(0)) and (source_reg_address(1) 
-				xnor mem_destination_reg_address(1)) and (source_reg_address(2) xnor mem_destination_reg_address(2));
+c2: comparator3 port map (x=>mem_destination_reg_address, y=>source_reg_address, equal_flag=>mem_compare);
 mem_to_pe <= mem_compare and mem_RF_write;
 
-wb_compare <= (source_reg_address(0) xnor wb_destination_reg_address(0)) and (source_reg_address(1) xnor wb_destination_reg_address(1))
-				and (source_reg_address(2) xnor wb_destination_reg_address(2));
+c3: comparator3 port map (x=>wb_destination_reg_address, y=>source_reg_address, equal_flag=>wb_compare);
 wb_to_pe <= wb_compare and wb_RF_write;
 
 pe: priority_encoder_4to2 port map (x(3)=>ex_to_pe, x(2)=>mem_to_pe, x(1)=>wb_to_pe, x(0)=>'1', y=>data_select(1 downto 0));
