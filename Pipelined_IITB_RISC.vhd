@@ -24,7 +24,8 @@ architecture arch of Pipelined_IITB_RISC is
 	signal IF_ID_in: std_logic_vector(48 downto 0);
 	signal IF_ID_out: std_logic_vector(48 downto 0);
 	signal IF_flush, ID_flush1, ID_flush, RR_flush, EX_flush: std_logic;
-	signal IF_ID_en, ID_RR_en: std_logic;
+	signal IF_ID_en: std_logic;
+	signal ID_RR_en, RR_EX_en, EX_MEM_en, MEM_WB_en: std_logic :='1';
     signal PE_Flag:  std_logic;
     signal control_word, pipelined_control_word:  std_logic_vector(14 downto 0);
     signal PE_out:  std_logic_vector(7 downto 0);
@@ -41,9 +42,11 @@ architecture arch of Pipelined_IITB_RISC is
 	signal EX_control_out: std_logic_vector(9 downto 0);
 	signal MEM_control_out: std_logic_vector(4 downto 0);
 	signal flush_assign: std_logic_vector(3 downto 0); 
-	signal RR_EX_in, RR_EX_out: std_logic_vector(98 downto 0);
+	signal RR_EX_in, RR_EX_out: std_logic_vector(97 downto 0);
 	signal EX_MEM_out, EX_MEM_in: std_logic_vector(78 downto 0);
 	signal MEM_WB_out, MEM_WB_in: std_logic_vector(78 downto 0);
+	signal c_out, z_out, nop_bit, updated_z_flag: std_logic;
+	signal global_flag_out: std_logic_vector(1 downto 0);
 	--RF_write: in std_logic ;
 	--reg_file_A1: in std_logic_vector(2 downto 0) ;
 	--reg_file_A2: in std_logic_vector(2 downto 0) ;
@@ -138,7 +141,11 @@ begin
 										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0), 
 										wb_RF_write=>MEM_WB_out(55), wb_destination_reg_address=>MEM_WB_out(52 downto 50), data_select=>data_select2);
 
-	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>'1', flush=>EX_flush); --NOP dependent only on flush bit here
+	Flag_FW: flag_forwarding_block port map(ex_flag_en=>RR_EX_out(72 downto 71), mem_flag_en=>EX_MEM_out(73 downto 72), wb_flag_en=>MEM_WB_out(54 downto 53),
+											ex_flag_value(1)=>c_out, ex_flag_value(0)=>z_out,
+											mem_flag_value(1)=>MEM_WB_in(17), mem_flag_value(0)=>MEM_WB_in(16), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>CZ_depend,
+											nop_bit=>nop_bit); 
+	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>EX_flush); --NOP dependent only on flush bit here
 
 	RRead: RR port map (RF_write=>ID_RR_out(71), reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
 						reg_file_D3=>WB_MUX_out, ex_data=>alu_out, mem_data=>mem_out, wb_data=>WB_MUX_out, incremented_PC=>ID_RR_out(16 downto 1), 
@@ -146,8 +153,7 @@ begin
 						LMSM_memaddress_in=>RR_EX_out(15 downto 0), --RA+1
 						alu_a_input=>alu_a_input,
 						alu_b_input=>alu_b_input, LMSM_memaddress_out=>LMSM_memaddress_out);
-
-	RR_EX_in(98)<= --whether to make NOP or not for CZ dependent
+ --whether to make NOP or not for CZ dependent
 	RR_EX_in(97 downto 82)<=ID_RR_out(32 downto 17);--LHI
 	RR_EX_in(81 downto 68)<=RR_control_out; RR_EX_in(67 downto 52)<=alu_a_input;--Rs1
 							RR_EX_in(51 downto 36)<=alu_b_input;--Rs2
@@ -156,14 +162,14 @@ begin
 							RR_EX_in(16)<=ID_RR_out(0);--is_LMSM
 							RR_EX_in(15 downto 0)<=LMSM_memaddress_out;--RA+1
 	--input to RR/EX Register
-	RR_EX: DataRegister generic map(data_width=>99) port map(Din=>RR_EX_in , Dout=>RR_EX_out , Enable=>RR_EX_en , clk=>clk); --ID/RR register
+	RR_EX: DataRegister generic map(data_width=>98) port map(Din=>RR_EX_in , Dout=>RR_EX_out , Enable=>RR_EX_en , clk=>clk); --ID/RR register
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	Execute: EX port map (Rs1=>RR_EX_out(67 downto 52), Rs2=>RR_EX_out(51 downto 36), SE_6=>RR_EX_out(32 downto 17), alu_a_sel=>RR_EX_out(79), 
 						alu_b_sel=>RR_EX_out(78), alu_op=>RR_EX_out(81 downto 80), alu_out=>alu_out, c_out=>c_out, z_out=>z_out);
 	
-	CZ_Staller: generic_staller generic map (data_width=>10) port map(control_word=>RR_EX_out(77 downto 68), pipelined_control_word=>EX_control_out, NOP_MUX_sel=>RR_EX_out(98), flush=>EX_flush);
+	CZ_Staller: generic_staller generic map (data_width=>10) port map(control_word=>RR_EX_out(77 downto 68), pipelined_control_word=>EX_control_out, NOP_MUX_sel=>'1', flush=>EX_flush);
 
 	EX_MEM_in(78 downto 69)<=EX_control_out;--ControlWord
 	EX_MEM_in(68 downto 53)<=RR_EX_out(97 downto 82);--LHI or PC+IMM
@@ -181,13 +187,14 @@ begin
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	Memory: MEM port map(Rs1=>EX_MEM_out(18 downto 3), mem_address_sel=>EX_MEM_out(78), RA_plus_n=>EX_MEM_out(52 downto 37), alu_out=>EX_MEM_out(36 downto 21),
-						 mem_write=>EX_MEM_out(77), mem_out=>mem_out, clk=>clk);
+						 mem_write=>EX_MEM_out(77), mem_out=>mem_out, clk=>clk, z_flag_in=>EX_MEM_out(19), z_enable=>EX_MEM_out(73), is_load_type=>EX_MEM_out(77),
+						 updated_z_flag=>updated_z_flag);
 
 
 	MEM_Staller: generic_staller generic map (data_width=>5) port map(control_word=>EX_MEM_out(76 downto 72), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>EX_flush); --NOP dependent only on flush bit here
 
 	MEM_WB_in(57 downto 53)<=MEM_control_out; MEM_WB_in(52 downto 50)<=EX_MEM_out(2 downto 0);MEM_WB_in(49 downto 34)<=EX_MEM_out(36 downto 21); 
-	MEM_WB_in(33 downto 18)<=mem_out;MEM_WB_in(17)<=EX_MEM_out(20); MEM_WB_in(16)<=EX_MEM_out(19); MEM_WB_in(15 downto 0)<=EX_MEM_out(68 downto 53);
+	MEM_WB_in(33 downto 18)<=mem_out;MEM_WB_in(17)<=EX_MEM_out(20); MEM_WB_in(16)<=updated_z_flag; MEM_WB_in(15 downto 0)<=EX_MEM_out(68 downto 53);
 
 	MEM_WB: DataRegister generic map(data_width=>79) port map(Din=>MEM_WB_in , Dout=>MEM_WB_out , Enable=>MEM_WB_en , clk=>clk); --MEM/WB register
 

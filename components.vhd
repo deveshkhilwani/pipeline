@@ -50,7 +50,7 @@ package components is
             ex_flag_value: in std_logic_vector(1 downto 0) ;    --carry_flag is the significant bit
             mem_flag_value: in std_logic_vector(1 downto 0) ;
             wb_flag_value: in std_logic_vector(1 downto 0) ;
-            global_flag_vlaue: in std_logic_vector(1 downto 0) ;
+            global_flag_value: in std_logic_vector(1 downto 0) ;
 
             cz_dependence: in std_logic_vector(1 downto 0) ;    --carry_enable is the significant bit
             nop_bit: out std_logic                              --nop_bit is cleared when we have to convert to nop
@@ -299,6 +299,8 @@ package components is
             alu_out: in std_logic_vector(15 downto 0);
             mem_write: in std_logic;
             mem_out: out std_logic_vector(15 downto 0);
+            updated_z_flag: out std_logic;
+            z_flag_in,z_enable,is_load_type: in std_logic;
             clk: in std_logic
             );
     end component;
@@ -311,7 +313,9 @@ package components is
             PC_plus_Imm_or_shifter: in std_logic_vector(15 downto 0);
             flag_out: in std_logic_vector(1 downto 0);
             RF_write: in std_logic;
-            flag_write: in std_logic;
+            flag_write: in std_logic_vector(1 downto 0);
+            global_flag_out: out std_logic_vector(1 downto 0);
+
             --WB_Rd: out std_logic_vector(2 downto 0);
             WB_MUX_out: out std_logic_vector(15 downto 0)
             );
