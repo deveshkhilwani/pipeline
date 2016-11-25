@@ -84,6 +84,17 @@ package components is
             output0: out std_logic_vector(data_width-1 downto 0) ;
             select_signal: in std_logic
                 ) ; 
+    end component ; -- mux_2to1
+    component generic_mux_4to1 is
+    generic(data_width:integer);
+          port (
+            input0: in std_logic_vector(data_width-1 downto 0) ;--when select signal is "00"
+            input1: in std_logic_vector(data_width-1 downto 0) ;--when select signal is "01"
+            input2: in std_logic_vector(data_width-1 downto 0) ;--when select signal is "10"
+            input3: in std_logic_vector(data_width-1 downto 0) ;--when select signal is "11"
+            output0: out std_logic_vector(data_width-1 downto 0) ;
+            select_signal: in std_logic_vector(1 downto 0)
+                ) ; 
     end component ; -- mux_4to1
 
     component mux_4to1 is
@@ -103,7 +114,7 @@ package components is
         output0: out std_logic_vector(15 downto 0) ;
         select_signal: in std_logic
       ) ;
-    end component ; -- mux_4to1
+    end component ; -- mux_2to1
     component RF_decoder is
        port (x: in std_logic_vector(2 downto 0); y: out std_logic_vector(6 downto 0));
     end component;
@@ -127,6 +138,9 @@ package components is
 
     component adder is
         port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
+    end component;
+    component full_adder is
+        port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(16 downto 0));
     end component;
     component xorer is
        port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0));
@@ -180,6 +194,13 @@ package components is
             data_o : out std_logic_vector(15 downto 0)
          );
     end component;
+    component i_mem is
+    port (clk : in std_logic;
+        address : in std_logic_vector(15 downto 0);
+        instruction_out : out std_logic_vector(15 downto 0)
+         );
+    end component;
+
 
 
     component I_Fetch is 

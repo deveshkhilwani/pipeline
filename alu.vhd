@@ -16,7 +16,7 @@ architecture paratha of alu is
 	signal alu_out: std_logic_vector(15 downto 0);
 	constant c0: std_logic_vector(15 downto 0):=(others=>'0');
 begin
-	op1: adder port map (x=>x, y=>y, z=>add_out);
+	op1: full_adder port map (x=>x, y=>y, z=>add_out);
 	op2: nander port map (x=>x, y=>y, z=>nand_out);
 	op3: xorer port map (x=>x, y=>y, z=>xor_out);
 
