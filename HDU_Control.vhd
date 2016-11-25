@@ -38,7 +38,8 @@ PC_MUX1_sel<=R7_fwd;
 flush_assign_signal<="1111" when (R7_fwd = "11") 
 			else "1110" when (R7_fwd = "10")
 			else "1100" when (R7_fwd = "01")
-			else "1000" when (R7_fwd = "00");
+			else "1000" when (R7_fwd = "00")
+			else "0000";
 
 flush_assign(0)<=control_hazard and flush_assign_signal(0);
 flush_assign(1)<=control_hazard and flush_assign_signal(1);

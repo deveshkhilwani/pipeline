@@ -319,7 +319,9 @@ package components is
             Rs1: in std_logic_vector(15 downto 0);
 
             --WB_Rd: out std_logic_vector(2 downto 0);
-            WB_MUX_out: out std_logic_vector(15 downto 0)
+            WB_MUX_out: out std_logic_vector(15 downto 0);
+            clk: in std_logic;
+            reset: in std_logic
             );
     end component;
 

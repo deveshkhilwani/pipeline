@@ -24,15 +24,18 @@ end entity;
 
 architecture arch of WB is
 
-	--signal WB_MUX_out: std_logic_vector(15 downto 0);
---	constant C0: std_logic_vector(15 downto 0) := (others => '0');
+	signal c_in,z_in: std_logic_vector(0 downto 0);
+	constant c0: std_logic_vector(0 downto 0) := (others => '0');
 
 	
 begin
 	--WB_Rd<=Rd;
 	WB_MUX: mux_4to1 port map (input0=>alu_out, input1=>mem_out, input2=>PC_plus_Imm_or_shifter, input3=>Rs1, output0=>WB_MUX_out, select_signal=>wb_address_sel);
 	--RF: reg_file port map (A3=>Rd,D3=>WB_MUX_out, RF_write=>RF_write, clk=>clk, reset=>reset);
-	CY_Flag: DataRegister generic map (data_width=>1) port map(Din=>flag_out(1 downto 1), Dout=>global_flag_out(1 downto 1), Enable=>flag_write(1), clk=>clk);
-	Z_Flag: DataRegister generic map (data_width=>1) port map(Din=>flag_out(0 downto 0), Dout=>global_flag_out(0 downto 0), Enable=>flag_write(0), clk=>clk);
+
+	c_in(0) <= flag_out(1) and (not reset);
+	z_in(0) <= flag_out(0) and (not reset);
+	CY_Flag: DataRegister generic map (data_width=>1) port map(Din=>c_in, Dout=>global_flag_out(1 downto 1), Enable=>flag_write(1), clk=>clk);
+	Z_Flag: DataRegister generic map (data_width=>1) port map(Din=>z_in, Dout=>global_flag_out(0 downto 0), Enable=>flag_write(0), clk=>clk);
 
 end architecture ; -- arch

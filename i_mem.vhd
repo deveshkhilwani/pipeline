@@ -15,8 +15,8 @@ architecture Behavioral of i_mem is
 --with each element being 8 bit wide.
 type ram_t is array (0 to 65535) of std_logic_vector(15 downto 0);
 signal ram : ram_t := (
-     0=>"0100000110000000",
-others=>"0000000000000000"
+     --0=>"0100001110000000",
+others=>"0011000000000010"
 );--(others => '0'));
 
 begin
