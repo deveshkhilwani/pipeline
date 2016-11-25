@@ -14,15 +14,14 @@ port(
 		PC_plus1: out std_logic_vector(15 downto 0);
 		PC: out std_logic_vector(15 downto 0);
 		IW: out std_logic_vector(15 downto 0);
-		clk: in std_logic;
-		reset: in std_logic
+		R7_write: in std_logic;
+		clk: in std_logic
 	);
 end entity;
 
 architecture arch of I_Fetch is
 
 	signal PC_MUX1_out, PC_MUX2_out, PC_plus1_signal, R7_out: std_logic_vector(15 downto 0);
-	signal R7_write: std_logic;
 	constant C1: std_logic_vector(15 downto 0) := (0=>'1', others => '0');
 
 

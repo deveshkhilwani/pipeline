@@ -11,8 +11,7 @@ port(
 		alu_out: in std_logic_vector(15 downto 0);
 		mem_write: in std_logic;
 		mem_out: out std_logic_vector(15 downto 0);
-		clk: in std_logic;
-		reset: in std_logic
+		clk: in std_logic
 	);
 end entity;
 

@@ -9,6 +9,7 @@ port(
 		control_word: out std_logic_vector(19 downto 0); 
 		Rs1: out std_logic_vector(2 downto 0); 
 		Rs2: out std_logic_vector(2 downto 0); 
+		CZ_depend: out std_logic_vector(1 downto 0);
 		Rd: out std_logic_vector(2 downto 0)
 	);
 end entity;
@@ -17,10 +18,13 @@ architecture arch of Decoder is
 -- x = 0
 
 signal c1,c2,ID_select, RR_select, d1,d2,d3,EX_select_1,EX_select_2,LW_select,LM_select :std_logic; 
-signal If_R7_Ra,If_R7_Rb,If_R7_Rc,If_R7_LM :std_logic;
+signal If_R7_Ra,If_R7_Rb,If_R7_Rc,If_R7_LM ,CZ_control:std_logic;
 signal R7d_select_ID, R7d_select_RR, R7d_select_EX, R7d_select_MEM :std_logic; 
 
 begin
+CZ_control<= ( ( (not instruction_word(15)) and (not (instruction_word(14))) ) and (not (instruction_word(12))));--Checking Arithmetic except ADI
+
+CZ_depend<=instruction_word(1 downto 0) when CZ_control='1' else "00";
 control_word(19)<='1' when instruction_word(15 downto 12) = "0111";
 control_word(18)<='1' when instruction_word(15 downto 12) = "0110";
 control_word(17 downto 3)<=      "000000000000111" when (instruction_word(15 downto 12)="0000")
@@ -50,7 +54,7 @@ EX_select_2<= '1' when instruction_word(15 downto 12) ="0001" else '0'; --ADI
 
 LW_select<='1' when instruction_word(15 downto 12) ="0100" else '0';
 LM_select<='1' when instruction_word(15 downto 12) ="0110" else '0';
-
+--SM_select<='1' when instruction_word(15 downto 12) ="0111"
 If_R7_Ra<= '1' when instruction_word(11 downto 9) ="111" else '0'; -- LHI, LW 
 If_R7_Rb<= '1' when instruction_word(8 downto 6) ="111" else '0'; -- ADI
 If_R7_Rc<= '1' when instruction_word(5 downto 3) ="111" else '0'; -- All Arithmetic operations 
@@ -100,14 +104,3 @@ Rd<=instruction_word(5 downto 3) when EX_select_1='1' else
     
 
 end arch;
-
-
-
-
-
-
-
-
-
-
-

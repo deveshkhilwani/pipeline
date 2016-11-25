@@ -9,8 +9,8 @@ port(
 	RR_R7d: in std_logic_vector(2 downto 0);
 	EX_R7d: in std_logic_vector(2 downto 0);
 	MEM_R7d: in std_logic_vector(2 downto 0);
-	PC_MUX1_sel: out std_logic;
-	PC_MUX2_sel: out std_logic_vector(1 downto 0);
+	PC_MUX2_sel: out std_logic;
+	PC_MUX1_sel: out std_logic_vector(1 downto 0);
 	flush_assign: out std_logic_vector(3 downto 0)
 );
 end entity;
@@ -33,8 +33,8 @@ control_hazard<=fwd_from_MEM or fwd_from_EX or fwd_from_RR or fwd_from_ID;
 
 pe: priority_encoder_4to2 port map (x(3)=>fwd_from_MEM, x(2)=>fwd_from_EX, x(1)=>fwd_from_RR, x(0)=>fwd_from_ID, y=>R7_fwd(1 downto 0));
 
-PC_MUX1_sel<=control_hazard;
-PC_MUX2_sel<=R7_fwd;
+PC_MUX2_sel<=control_hazard;
+PC_MUX1_sel<=R7_fwd;
 flush_assign_signal<="1111" when (R7_fwd = "11") 
 			else "1110" when (R7_fwd = "10")
 			else "1100" when (R7_fwd = "01")

@@ -5,11 +5,9 @@ use work.components.all;
 
 entity special_pe is
    port(input0: in std_logic_vector(7 downto 0);
-   		input_sel,clk: in std_logic;
-
-   	output0: out std_logic_vector(7 downto 0);
-	Rsel: out std_logic_vector(2 downto 0);
-	flag: out std_logic);
+   	   	output0: out std_logic_vector(7 downto 0);
+		Rsel: out std_logic_vector(2 downto 0);
+		flag: out std_logic);
 end entity;
 
 architecture arrange of special_pe is

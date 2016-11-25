@@ -17,8 +17,8 @@ port(
 		Rd: out std_logic_vector(2 downto 0);
 		SE6: out std_logic_vector(15 downto 0);
 		ID_MUX: out std_logic_vector(15 downto 0);
-		clk: in std_logic;
-		reset: in std_logic
+		is_LMSM: out std_logic;
+		CZ_depend: out std_logic_vector(1 downto 0)
 	);
 end entity;
 
@@ -32,13 +32,15 @@ architecture arch of ID is
 	constant C0: std_logic_vector(15 downto 0) := (others => '0');
 	
 begin
+
 	SE6<=SE6_sig;
 	control_word<=control_out(14 downto 0);
-	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig);
+	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig, CZ_depend=>CZ_depend);
+	is_LMSM<=control_out(19) or control_out(18);
 	PE_input_MUX: generic_mux_2to1 generic map(data_width=>8) port map (input0=>IW(7 downto 0), input1=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
 
 	--PE_input_MUX: mux_2to1 port map(input1=>IW(7 downto 0), input2=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
-	PE_LM_SM: special_pe port map(input0=>PE_input_sig, output0=>PE_out, Flag=>PE_Flag, Rsel=>Rsel_sig, clk=>clk);
+	PE_LM_SM: special_pe port map(input0=>PE_input_sig, output0=>PE_out, Flag=>PE_Flag, Rsel=>Rsel_sig);
 	Rs1_MUX: generic_mux_2to1 generic map (data_width=>3) port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));
 
 --	Rs1_MUX: mux_2to1 port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));
