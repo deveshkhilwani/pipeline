@@ -132,12 +132,12 @@ begin
 	-----------------------------------------------------------------------------------------------------------------------------------------------
 	FW1: data_forwarding_block port map(source_reg_address=>ID_RR_out(57 downto 55), ex_RF_write=>RR_EX_out(73),--RF_write
 										ex_destination_reg_address=>RR_EX_out(35 downto 33),--Rd
-										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0), 
+										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0),RR_d3_mux_sel=>ID_RR_out(73 dwonto 72),
 										wb_RF_write=>MEM_WB_out(55), wb_destination_reg_address=>MEM_WB_out(52 downto 50), data_select=>data_select1);
 
 	
 	FW2: data_forwarding_block port map(source_reg_address=>ID_RR_out(54 downto 52), ex_RF_write=>RR_EX_out(73),
-										ex_destination_reg_address=>RR_EX_out(35 downto 33),
+										ex_destination_reg_address=>RR_EX_out(35 downto 33),RR_d3_mux_sel=>ID_RR_out(73 dwonto 72),
 										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0), 
 										wb_RF_write=>MEM_WB_out(55), wb_destination_reg_address=>MEM_WB_out(52 downto 50), data_select=>data_select2);
 

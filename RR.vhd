@@ -71,3 +71,4 @@ incrementer: adder port map (x=>c1, y=>LMSM_memaddress_in, z=>adder_out);
 
 
 end architecture ; -- arch
+-- select incremented PC in case of JLR and JAL for Rs1 

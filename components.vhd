@@ -37,7 +37,8 @@ package components is
             mem_destination_reg_address: in std_logic_vector(2 downto 0) ;
             wb_RF_write: in std_logic ;
             wb_destination_reg_address: in std_logic_vector(2 downto 0) ;
-            data_select: out std_logic_vector(2 downto 0)
+            data_select: out std_logic_vector(2 downto 0);
+            RR_d3_mux_sel: in std_logic_vector(1 downto 0)
             );
     end component;
 

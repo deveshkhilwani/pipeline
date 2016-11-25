@@ -12,7 +12,8 @@ port(
 	mem_destination_reg_address: in std_logic_vector(2 downto 0) ;
 	wb_RF_write: in std_logic ;
 	wb_destination_reg_address: in std_logic_vector(2 downto 0) ;
-	data_select: out std_logic_vector(2 downto 0)
+	data_select: out std_logic_vector(2 downto 0) ;
+	RR_d3_mux_sel: in std_logic_vector(1 downto 0)
 	);
 end entity;
 
@@ -35,7 +36,9 @@ pe: priority_encoder_4to2 port map (x(3)=>ex_to_pe,			--output is "11"
 									x(1)=>wb_to_pe, 		--output is "01"
 									x(0)=>'1', 				--output is "00" when no forwarding needed
 									y=>data_select(1 downto 0));
-data_select(2) <= source_reg_address(0) and source_reg_address(1) and source_reg_address(2);
+
+data_select(2) <= (source_reg_address(0) and source_reg_address(1) and source_reg_address(2))--'1' when Rs_address is "111" or JAL,JLR
+					 or (RR_d3_mux_sel(0) and RR_d3_mux_sel(1));							--this is "11" only for JAL,JLR
 
 
 end arch ; -- arch
