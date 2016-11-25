@@ -21,9 +21,11 @@ end entity;
 architecture arch of WB is
 
 	signal WB_MUX_out: std_logic_vector(15 downto 0);
+	constant C0: std_logic_vector(15 downto 0) := (others => '0');
+
 	
 begin
-	WB_MUX: mux_4to1 port map (input0=>alu_out, input1=>mem_out, input2=>PC_plus_Imm_or_shifter, input3=>alu_out, output0=>WB_MUX_out, select_signal=>wb_address_sel);
+	WB_MUX: mux_4to1 port map (input0=>alu_out, input1=>mem_out, input2=>PC_plus_Imm_or_shifter, input3=>C0, output0=>WB_MUX_out, select_signal=>wb_address_sel);
 	RF: reg_file port map (A3=>Rd,D3=>WB_MUX_out, RF_write=>RF_write, clk=>clk, reset=>reset);
 
 end architecture ; -- arch

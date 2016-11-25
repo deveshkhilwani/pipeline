@@ -35,11 +35,14 @@ begin
 	SE6<=SE6_sig;
 	control_word<=control_out(14 downto 0);
 	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig);
+	PE_input_MUX: generic_mux_2to1 generic map(data_width=>8) port map (input0=>IW(7 downto 0), input1=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
+
 	--PE_input_MUX: mux_2to1 port map(input1=>IW(7 downto 0), input2=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
 	PE_LM_SM: special_pe port map(input0=>PE_input_sig, output0=>PE_out, Flag=>PE_Flag, Rsel=>Rsel_sig, clk=>clk);
-	
+	Rs1_MUX: generic_mux_2to1 generic map (data_width=>3) port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));
+
 --	Rs1_MUX: mux_2to1 port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));
---	Rd_MUX: mux_2to1 port map(input0=>Rd_sig, input1=>Rsel_sig, output0=>Rd, select_signal=>control_out(18)); 
+	Rd_MUX: generic_mux_2to1 generic map (data_width=>3) port map (input0=>Rd_sig, input1=>Rsel_sig, output0=>Rd, select_signal=>control_out(18)); 
 	SE_6: sign_ext6 port map (x=>IW(5 downto 0), y=>SE6_sig);
 	SE_9: sign_ext9 port map (x=>IW(8 downto 0), y=>SE9_sig);
 	JAL_adder: adder port map (x=>PC, y=>SE9_sig, z=>PC_plus_imm9);

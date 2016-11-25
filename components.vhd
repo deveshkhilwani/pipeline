@@ -76,6 +76,16 @@ package components is
               clk, enable: in std_logic);
     end component;
 
+    component generic_mux_2to1 is
+    generic(data_width:integer);
+          port (
+            input1: in std_logic_vector(data_width-1 downto 0) ;        --selct is '1'
+            input0: in std_logic_vector(data_width-1 downto 0) ;        --selct is '0'
+            output0: out std_logic_vector(data_width-1 downto 0) ;
+            select_signal: in std_logic
+                ) ; 
+    end component ; -- mux_4to1
+
     component mux_4to1 is
       port (
         input0: in std_logic_vector(15 downto 0) ;
@@ -154,6 +164,23 @@ package components is
     Rsel: out std_logic_vector(2 downto 0);
     flag: out std_logic);
     end component;
+
+    component alu is
+        port (x,y: in std_logic_vector(15 downto 0); z: out std_logic_vector(15 downto 0);
+                carry,zero: out std_logic;
+                --control signals
+                op_code:in std_logic_vector(1 downto 0));
+    end component;
+
+    component bram is
+        port (clk : in std_logic;
+            address : in std_logic_vector(15 downto 0);
+            we : in std_logic;
+            data_i : in std_logic_vector(15 downto 0);
+            data_o : out std_logic_vector(15 downto 0)
+         );
+    end component;
+
 
     component I_Fetch is 
         port(
