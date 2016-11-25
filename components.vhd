@@ -241,6 +241,21 @@ package components is
         );
     end component;
 
+    component staller is
+        port(
+            control_word: in std_logic_vector(19 downto 0) ;        
+            control_word_for_stall: out std_logic_vector(19 downto 0)   
+        );
+    end component; 
+
+    component NOP_mux is
+        port (
+            control_word: in std_logic_vector(19 downto 0) ;  --select is '1', input1 
+            control_word_for_stall: in std_logic_vector(19 downto 0); --select is '0', input0 
+            pipelined_control_word : out std_logic_vector(14 downto 0); 
+            NOP_mux_sel : in std_logic  
+        ) ;
+    end component; 
 
 -->>>>>>> 8df1c7e9c6625a725a0285da5631555be69d8172
 
