@@ -45,8 +45,8 @@ architecture arch of Pipelined_IITB_RISC is
 	signal RR_EX_in, RR_EX_out: std_logic_vector(97 downto 0);
 	signal EX_MEM_out, EX_MEM_in: std_logic_vector(78 downto 0);
 	signal MEM_WB_out, MEM_WB_in: std_logic_vector(78 downto 0);
-	signal c_out, z_out, nop_bit, updated_z_flag: std_logic;
-	signal global_flag_out: std_logic_vector(1 downto 0);
+	signal c_out, z_out, nop_bit, updated_z_flag, new_RF_write: std_logic;
+	signal global_flag_out, new_flag_write: std_logic_vector(1 downto 0);
 	--RF_write: in std_logic ;
 	--reg_file_A1: in std_logic_vector(2 downto 0) ;
 	--reg_file_A2: in std_logic_vector(2 downto 0) ;
@@ -145,7 +145,7 @@ begin
 											ex_flag_value(1)=>c_out, ex_flag_value(0)=>z_out,
 											mem_flag_value(1)=>MEM_WB_in(17), mem_flag_value(0)=>MEM_WB_in(16), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>CZ_depend,
 											nop_bit=>nop_bit); 
-	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>EX_flush); --NOP dependent only on flush bit here
+	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>RR_flush); --NOP dependent only on flush bit here
 
 	RRead: RR port map (RF_write=>ID_RR_out(71), reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
 						reg_file_D3=>WB_MUX_out, ex_data=>alu_out, mem_data=>mem_out, wb_data=>WB_MUX_out, incremented_PC=>ID_RR_out(16 downto 1), 
@@ -191,7 +191,7 @@ begin
 						 updated_z_flag=>updated_z_flag);
 
 
-	MEM_Staller: generic_staller generic map (data_width=>5) port map(control_word=>EX_MEM_out(76 downto 72), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>EX_flush); --NOP dependent only on flush bit here
+	MEM_Staller: generic_staller generic map (data_width=>5) port map(control_word=>EX_MEM_out(76 downto 72), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>reset); --NOP dependent only on reset bit here
 
 	MEM_WB_in(57 downto 53)<=MEM_control_out; MEM_WB_in(52 downto 50)<=EX_MEM_out(2 downto 0);MEM_WB_in(49 downto 34)<=EX_MEM_out(36 downto 21); 
 	MEM_WB_in(33 downto 18)<=mem_out;MEM_WB_in(17)<=EX_MEM_out(20); MEM_WB_in(16)<=updated_z_flag; MEM_WB_in(15 downto 0)<=EX_MEM_out(68 downto 53);
@@ -200,9 +200,13 @@ begin
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	new_RF_write <= MEM_WB_out(55)	and (not reset);
+	new_flag_write(1) <= MEM_WB_out(54) and (not reset);
+	new_flag_write(0) <= MEM_WB_out(53) and (not reset);
+
 	Write_Back: WB port map (wb_address_sel=>MEM_WB_out(57 downto 56), mem_out=>MEM_WB_out(33 downto 18), alu_out=>MEM_WB_out(49 downto 34), 
 							 PC_plus_Imm_or_shifter=>MEM_WB_out(15 downto 0), flag_out(1)=>MEM_WB_out(17), flag_out(0)=>MEM_WB_out(16), 
-							 RF_write=>MEM_WB_out(55), flag_write=>MEM_WB_out(54 downto 53), WB_MUX_out=>WB_MUX_out);
+							 RF_write=>new_RF_write, flag_write=>new_flag_write, WB_MUX_out=>WB_MUX_out);
 
 
 	WB_RD<=MEM_WB_out(52 downto 50);

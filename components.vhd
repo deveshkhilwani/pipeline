@@ -232,7 +232,7 @@ package components is
             PC_plus1: out std_logic_vector(15 downto 0);
             PC: out std_logic_vector(15 downto 0);
             IW: out std_logic_vector(15 downto 0);
-            R7_write: in std_logic;
+            R7_write,reset: in std_logic;
             clk: in std_logic
             );
     end component;
