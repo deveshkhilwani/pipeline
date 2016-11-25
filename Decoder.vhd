@@ -31,12 +31,12 @@ control_word(17 downto 3)<=      "000000000000111" when (instruction_word(15 dow
 							else "000000010000111" when (instruction_word(15 downto 12)="0001")
 							else "000001000000101" when (instruction_word(15 downto 12)="0010")
 							else "000000000010100" when (instruction_word(15 downto 12)="0011")
-							else "000000100001101" when (instruction_word(15 downto 12)="0100")
+							else "000000010001101" when (instruction_word(15 downto 12)="0100")
 							else "000000100100000" when (instruction_word(15 downto 12)="0101")	
-							else "001100000001100" when (instruction_word(15 downto 12)="0110")
+							else "001100001001100" when (instruction_word(15 downto 12)="0110")
 							else "001100001100000" when (instruction_word(15 downto 12)="0111")
-							else "100000000011000" when (instruction_word(15 downto 12)="1000")
-							else "000000000011000" when (instruction_word(15 downto 12)="1001")
+							else "100000000011100" when (instruction_word(15 downto 12)="1000")
+							else "000000000011100" when (instruction_word(15 downto 12)="1001")
 							else "010010000000000" when (instruction_word(15 downto 12)="1100")
 			;
 c1<= '1' when instruction_word(15 downto 12) ="0011" else '0';

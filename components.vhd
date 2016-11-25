@@ -316,6 +316,7 @@ package components is
             RF_write: in std_logic;
             flag_write: in std_logic_vector(1 downto 0);
             global_flag_out: out std_logic_vector(1 downto 0);
+            Rs1: in std_logic_vector(15 downto 0);
 
             --WB_Rd: out std_logic_vector(2 downto 0);
             WB_MUX_out: out std_logic_vector(15 downto 0)
