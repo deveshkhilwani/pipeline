@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity i_mem is
-port (clk : in std_logic;
+port (--clk : in std_logic;
         address : in std_logic_vector(15 downto 0);
         instruction_out : out std_logic_vector(15 downto 0)
      );
@@ -13,9 +13,9 @@ architecture Behavioral of i_mem is
 
 --Declaration of type and signal of a 256 element RAM
 --with each element being 8 bit wide.
-type ram_t is array (0 to 100) of std_logic_vector(15 downto 0);
+type ram_t is array (0 to 65535) of std_logic_vector(15 downto 0);
 signal ram : ram_t := (
-     0=>"0100111110000000",
+     0=>"0100000110000000",
 others=>"0000000000000000"
 );--(others => '0'));
 

@@ -213,7 +213,7 @@ package components is
          );
     end component;
     component i_mem is
-    port (clk : in std_logic;
+    port (--clk : in std_logic;
         address : in std_logic_vector(15 downto 0);
         instruction_out : out std_logic_vector(15 downto 0)
          );
