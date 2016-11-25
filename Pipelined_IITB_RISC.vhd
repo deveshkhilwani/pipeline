@@ -18,12 +18,12 @@ architecture arch of Pipelined_IITB_RISC is
 	signal	R7_RR: std_logic_vector(15 downto 0);
 	signal	R7_EX: std_logic_vector(15 downto 0);
 	signal	R7_MEM: std_logic_vector(15 downto 0);
-	signal	PC_plus1: std_logic_vector(15 downto 0);
+	signal	PC_plus1, alu_out, mem_out, alu_a_input, alu_b_input, LMSM_memaddress_out: std_logic_vector(15 downto 0);
 	signal	PC: std_logic_vector(15 downto 0);
 	signal	IW, WB_MUX_out: std_logic_vector(15 downto 0);
 	signal IF_ID_in: std_logic_vector(48 downto 0);
 	signal IF_ID_out: std_logic_vector(48 downto 0);
-	signal IF_flush, ID_flush1, ID_flush: std_logic;
+	signal IF_flush, ID_flush1, ID_flush, RR_flush, EX_flush: std_logic;
 	signal IF_ID_en, ID_RR_en: std_logic;
     signal PE_Flag:  std_logic;
     signal control_word, pipelined_control_word:  std_logic_vector(14 downto 0);
@@ -38,6 +38,12 @@ architecture arch of Pipelined_IITB_RISC is
     signal R7_write: std_logic;
 	signal id_rr_out, id_rr_in: std_logic_vector(82 downto 0);
 	signal RR_control_out: std_logic_vector(13 downto 0);
+	signal EX_control_out: std_logic_vector(9 downto 0);
+	signal MEM_control_out: std_logic_vector(4 downto 0);
+	signal flush_assign: std_logic_vector(3 downto 0); 
+	signal RR_EX_in, RR_EX_out: std_logic_vector(98 downto 0);
+	signal EX_MEM_out, EX_MEM_in: std_logic_vector(78 downto 0);
+	signal MEM_WB_out, MEM_WB_in: std_logic_vector(78 downto 0);
 	--RF_write: in std_logic ;
 	--reg_file_A1: in std_logic_vector(2 downto 0) ;
 	--reg_file_A2: in std_logic_vector(2 downto 0) ;
@@ -112,7 +118,7 @@ begin
 
 
 	HDU_Ctrl: HDU_Control port map (ID_R7d=>pipelined_control_word(2 downto 0), RR_R7d=>RR_control_out(2 downto 0), EX_R7d=>EX_control_out(2 downto 0),
-									MEM_R7d=>MEM_control_out(2 downto 0), PC_MUX2_sel=>PC_MUX_sel2, PC_MUX1_sel=>PC_MUX_sel1, flush_assign=>flush_assign);
+									MEM_R7d=>MEM_control_out(2 downto 0), PC_MUX2_sel=>PC_MUX2_sel, PC_MUX1_sel=>PC_MUX1_sel, flush_assign=>flush_assign);
 	IF_flush<=flush_assign(3);
 	ID_flush<=flush_assign(2);
 	RR_flush<=flush_assign(1);

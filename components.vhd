@@ -41,18 +41,36 @@ package components is
             );
     end component;
 
+    component flag_forwarding_block is
+          port (
+            ex_flag_en: in std_logic_vector (1 downto 0);       --carry_enable is the significant bit
+            mem_flag_en: in std_logic_vector (1 downto 0);
+            wb_flag_en: in std_logic_vector (1 downto 0);
+
+            ex_flag_value: in std_logic_vector(1 downto 0) ;    --carry_flag is the significant bit
+            mem_flag_value: in std_logic_vector(1 downto 0) ;
+            wb_flag_value: in std_logic_vector(1 downto 0) ;
+            global_flag_vlaue: in std_logic_vector(1 downto 0) ;
+
+            cz_dependence: in std_logic_vector(1 downto 0) ;    --carry_enable is the significant bit
+            nop_bit: out std_logic                              --nop_bit is cleared when we have to convert to nop
+          ) ;
+    end component ; -- flag_forward_block
+
     component HDU_Data is
         port(
             source_reg_address1: in std_logic_vector(2 downto 0);
             source_reg_address2: in std_logic_vector(2 downto 0);
             instruction_word: in std_logic_vector(15 downto 0);
-            rr_mem_write: in std_logic;
+            rr_mem_write: in std_logic; --mem write of instructionin RR stage
             rr_z_en: in std_logic;
+            PE_Flag: in std_logic;
             rr_destination_reg_address: in std_logic_vector(2 downto 0);
             R7_en: out std_logic;
             IF_ID_en: out std_logic;
             NOP_mux_sel: out std_logic
-        );
+            );
+
     end component;
 
     component HDU_Control is
@@ -61,8 +79,8 @@ package components is
             RR_R7d: in std_logic_vector(2 downto 0);
             EX_R7d: in std_logic_vector(2 downto 0);
             MEM_R7d: in std_logic_vector(2 downto 0);
-            PC_MUX1_sel: out std_logic;
-            PC_MUX2_sel: out std_logic_vector(1 downto 0);
+            PC_MUX1_sel: out std_logic_vector(1 downto 0);
+            PC_MUX2_sel: out std_logic;
             flush_assign: out std_logic_vector(3 downto 0)
         );
     end component;
@@ -237,6 +255,29 @@ package components is
             CZ_depend: out std_logic_vector(1 downto 0)
             );
     end component;
+
+    component RR is
+          port (
+            RF_write: in std_logic ;
+            reg_file_A1: in std_logic_vector(2 downto 0) ;
+            reg_file_A2: in std_logic_vector(2 downto 0) ;
+            reg_file_A3: in std_logic_vector(2 downto 0) ;
+            reg_file_D3: in std_logic_vector(15 downto 0) ;
+            ex_data: in std_logic_vector(15 downto 0) ;
+            mem_data: in std_logic_vector(15 downto 0) ;
+            wb_data: in std_logic_vector(15 downto 0) ;
+            incremented_PC: in std_logic_vector(15 downto 0) ;
+            input1_mux_sel: in std_logic_vector(2 downto 0) ;
+            input2_mux_sel: in std_logic_vector(2 downto 0) ;
+            is_LMSM: in std_logic ;
+            alu_a_input: out std_logic_vector(15 downto 0) ;
+            alu_b_input: out std_logic_vector(15 downto 0) ;
+            LMSM_memaddress_out: out std_logic_vector(15 downto 0) ;
+            LMSM_memaddress_in: in std_logic_vector(15 downto 0) ;
+            clk,reset: in std_logic
+          ) ;
+    end component ; -- RR
+
 
     component EX is    
         port(
