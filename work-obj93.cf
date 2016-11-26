@@ -1,7 +1,7 @@
 v 3
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Pipelined_IITB_RISC.vhd" "20161126140222.000" "20161126193224.564":
-  entity pipelined_iitb_risc at 1( 0) + 0 on 61;
-  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 62;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Pipelined_IITB_RISC.vhd" "20161126140826.000" "20161126193828.939":
+  entity pipelined_iitb_risc at 1( 0) + 0 on 71;
+  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 72;
 file / "/Users/Praveen/Documents/Autumn 2016/pipeline/WB.vhd" "20161126121357.000" "20161126174358.298":
   entity wb at 1( 0) + 0 on 56;
   architecture arch of wb at 25( 762) + 0 on 57;

@@ -33,7 +33,7 @@ architecture arch of Pipelined_IITB_RISC is
     signal Rs2:  std_logic_vector(2 downto 0);
     signal Rd, WB_Rd:  std_logic_vector(2 downto 0);
     signal SE6:  std_logic_vector(15 downto 0);
-    signal ID_MUX, EX_FWD, MEM_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
+    signal ID_MUX, EX_FWD, MEM_FWD, WB_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
     signal NOP_MUX_sel, is_LMSM, is_load_type: std_logic;
     signal data_select1, data_select2: std_logic_vector(2 downto 0);
     signal R7_write: std_logic:='1';
@@ -120,7 +120,7 @@ begin
 	RR_control_out<= ID_RR_out(79 downto 66);
 --Check This!
 	RRead: RR port map (RF_write=>new_RF_write, reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
-						reg_file_D3=>MEM_WB_out(17 downto 2), ex_data=>alu_out, mem_data=>mem_out, wb_data=>WB_MUX_out, incremented_PC=>ID_RR_out(16 downto 1), 
+						reg_file_D3=>WB_FWD, ex_data=>EX_FWD, mem_data=>MEM_FWD, wb_data=>WB_FWD, incremented_PC=>ID_RR_out(16 downto 1), 
 						input1_mux_sel=>data_select1, input2_mux_sel=>data_select2, is_LMSM=>RR_EX_out(16),--is_LMSM
 						LMSM_memaddress_in=>RR_EX_out(15 downto 0), --RA+1
 						alu_a_input=>alu_a_input,
@@ -192,7 +192,7 @@ begin
 	Write_Back: WB port map (flag_out(1)=>MEM_WB_out(1), flag_out(0)=>MEM_WB_out(0),clk=>clk,reset=>reset,
 							 flag_write=>new_flag_write);
 
-
+	WB_FWD<=MEM_WB_out(17 downto 2);
 	WB_RD<=MEM_WB_out(20 downto 18);
 
 
