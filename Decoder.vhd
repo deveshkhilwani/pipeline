@@ -38,6 +38,7 @@ control_word(17 downto 3)<=      "000000000000111" when (instruction_word(15 dow
 							else "100000000011100" when (instruction_word(15 downto 12)="1000")
 							else "000000000011100" when (instruction_word(15 downto 12)="1001")
 							else "010010000000000" when (instruction_word(15 downto 12)="1100")
+							else "000000000000000"
 			;
 c1<= '1' when instruction_word(15 downto 12) ="0011" else '0'; -- LHI 
 c2<= '1' when instruction_word(15 downto 12) ="1000" else '0'; --JAL 
