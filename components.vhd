@@ -63,7 +63,7 @@ package components is
             source_reg_address1: in std_logic_vector(2 downto 0);
             source_reg_address2: in std_logic_vector(2 downto 0);
             instruction_word: in std_logic_vector(15 downto 0);
-            rr_mem_write: in std_logic; --mem write of instructionin RR stage
+            rr_mem_read: in std_logic; --tells whether instruction in RR stage reads from memory
             rr_z_en: in std_logic;
             PE_Flag: in std_logic;
             rr_destination_reg_address: in std_logic_vector(2 downto 0);

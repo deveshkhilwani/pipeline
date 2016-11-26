@@ -34,7 +34,7 @@ architecture arch of Pipelined_IITB_RISC is
     signal Rd, WB_Rd:  std_logic_vector(2 downto 0);
     signal SE6:  std_logic_vector(15 downto 0);
     signal ID_MUX, EX_FWD, MEM_FWD, WB_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
-    signal NOP_MUX_sel, is_LMSM, is_load_type: std_logic;
+    signal NOP_MUX_sel, is_LMSM, is_load_type, rr_mem_read: std_logic;
     signal data_select1, data_select2: std_logic_vector(2 downto 0);
     signal R7_write: std_logic:='1';
 	signal id_rr_out, id_rr_in, new_ID_RR_in: std_logic_vector(82 downto 0);
@@ -102,7 +102,8 @@ begin
 	RR_flush<=flush_assign(1);
 	EX_flush<=flush_assign(0);
 
-	HDU_d: HDU_Data port map(source_reg_address1=>Rs1, source_reg_address2=>Rs2, instruction_word=>IF_ID_out(48 downto 33), rr_mem_write=>ID_RR_out(74),
+	rr_mem_read <= (not id_rr_out(73)) and (ID_RR_out(72));
+	HDU_d: HDU_Data port map(source_reg_address1=>Rs1, source_reg_address2=>Rs2, instruction_word=>IF_ID_out(48 downto 33), rr_mem_read=>rr_mem_read,
 		   rr_z_en=>ID_RR_out(69), PE_Flag=>PE_Flag, rr_destination_reg_address=>ID_RR_out(51 downto 49), R7_en=>R7_write, IF_ID_en=>IF_ID_en, NOP_MUX_sel=>NOP_MUX_sel);
 	-----------------------------------------------------------------------------------------------------------------------------------------------
 	FW1: data_forwarding_block port map(source_reg_address=>ID_RR_out(57 downto 55), ex_RF_write=>RR_EX_out(73),--RF_write
