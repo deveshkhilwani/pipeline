@@ -40,11 +40,11 @@ architecture arch of Pipelined_IITB_RISC is
 	signal id_rr_out, id_rr_in, new_ID_RR_in: std_logic_vector(82 downto 0);
 	signal RR_control_out: std_logic_vector(13 downto 0);
 	signal EX_control_out: std_logic_vector(9 downto 0);
-	signal MEM_control_out: std_logic_vector(4 downto 0);
+	signal MEM_control_out: std_logic_vector(7 downto 0);
 	signal flush_assign: std_logic_vector(3 downto 0); 
 	signal RR_EX_in, RR_EX_out, new_RR_EX_in: std_logic_vector(97 downto 0);
 	signal EX_MEM_out, EX_MEM_in, new_EX_MEM_in: std_logic_vector(46 downto 0);
-	signal MEM_WB_out, MEM_WB_in, new_MEM_WB_in: std_logic_vector(27 downto 0);
+	signal MEM_WB_out, MEM_WB_in, new_MEM_WB_in: std_logic_vector(25 downto 0);
 	signal c_out, z_out, nop_bit, updated_z_flag, new_RF_write: std_logic;
 	signal global_flag_out, new_flag_write: std_logic_vector(1 downto 0);
 
@@ -52,7 +52,7 @@ architecture arch of Pipelined_IITB_RISC is
 	constant id_rr_c0: std_logic_vector(82 downto 0):=(others=>'0') ;
 	constant rr_ex_c0: std_logic_vector(97 downto 0):=(others=>'0') ;
 	constant ex_mem_c0: std_logic_vector(46 downto 0):=(others=>'0') ;
-	constant mem_wb_c0: std_logic_vector(27 downto 0):=(others=>'0') ;
+	constant mem_wb_c0: std_logic_vector(25 downto 0):=(others=>'0') ;
 	constant c0: std_logic_vector(15 downto 0):=(others=>'0');
 
 
@@ -73,8 +73,10 @@ begin
 	
 	ID_flush<=ID_flush1 or IF_flush; --flush logic. To flush when flush was asserted in IF or ID.
 	
-	--NOP_Staller: generic_staller generic map(data_width=>15) port map(control_word=>control_word, pipelined_control_word=>pipelined_control_word, NOP_MUX_sel=>NOP_MUX_sel, flush=>ID_flush);
-	pipelined_control_word <= control_word;
+	NOP_Staller: generic_staller generic map(data_width=>15) port map(control_word=>control_word, pipelined_control_word=>pipelined_control_word, NOP_MUX_sel=>NOP_MUX_sel, flush=>ID_flush);
+--for debugging only
+	--pipelined_control_word <= control_word;
+--for debugging only
 
 	-- When ID_flush = 1 or NOP_MUX_sel=0 then new control word = all 0s;
 	ID_RR_in(82 downto 81)<=CZ_depend;
@@ -87,13 +89,16 @@ begin
 	ID_RR: DataRegister generic map(data_width=>83) port map(Din=>new_ID_RR_in , Dout=>ID_RR_out , Enable=>ID_RR_en , clk=>clk); --ID/RR register
 
 
-	--HDU_Ctrl: HDU_Control port map (ID_R7d=>pipelined_control_word(2 downto 0), RR_R7d=>RR_control_out(2 downto 0), EX_R7d=>EX_control_out(2 downto 0),
-	--								MEM_R7d=>MEM_control_out(2 downto 0), PC_MUX2_sel=>PC_MUX2_sel, PC_MUX1_sel=>PC_MUX1_sel, flush_assign=>flush_assign);
-	flush_assign(3 downto 0)<="0000";
-	PC_MUX1_sel<="00";
-	PC_MUX2_sel<='0';
+	HDU_Ctrl: HDU_Control port map (ID_R7d=>pipelined_control_word(2 downto 0), RR_R7d=>RR_control_out(2 downto 0), EX_R7d=>EX_control_out(2 downto 0),
+									MEM_R7d=>MEM_control_out(2 downto 0), PC_MUX2_sel=>PC_MUX2_sel, PC_MUX1_sel=>PC_MUX1_sel, flush_assign=>flush_assign);
+--for debugging only
+	--flush_assign(3 downto 0)<="0000";
+	--PC_MUX1_sel<="00";
+	--PC_MUX2_sel<='0';
+--for debugging only
+
 	IF_flush<=flush_assign(3);
-	ID_flush<=flush_assign(2);
+	ID_flush1<=flush_assign(2);
 	RR_flush<=flush_assign(1);
 	EX_flush<=flush_assign(0);
 
@@ -116,9 +121,11 @@ begin
 											mem_flag_value(1)=>MEM_WB_in(17), mem_flag_value(0)=>MEM_WB_in(16), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>CZ_depend,
 											nop_bit=>nop_bit); 
 
-	--RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>RR_flush); --NOP dependent only on flush bit here
-	RR_control_out<= ID_RR_out(79 downto 66);
---Check This!
+	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>RR_flush); --NOP dependent only on flush bit here
+--for debugging only
+	--RR_control_out<= ID_RR_out(79 downto 66);
+--for debugging only
+
 	RRead: RR port map (RF_write=>new_RF_write, reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
 						reg_file_D3=>WB_FWD, ex_data=>EX_FWD, mem_data=>MEM_FWD, wb_data=>WB_FWD, incremented_PC=>ID_RR_out(16 downto 1), 
 						input1_mux_sel=>data_select1, input2_mux_sel=>data_select2, is_LMSM=>RR_EX_out(16),--is_LMSM
@@ -142,8 +149,11 @@ begin
 	Execute: EX port map (Rs1=>RR_EX_out(67 downto 52), Rs2=>RR_EX_out(51 downto 36), SE_6=>RR_EX_out(32 downto 17), alu_a_sel=>RR_EX_out(79), 
 						alu_b_sel=>RR_EX_out(78), alu_op=>RR_EX_out(81 downto 80), alu_out=>alu_out, c_out=>c_out, z_out=>z_out);
 	
-	--CZ_Staller: generic_staller generic map (data_width=>10) port map(control_word=>RR_EX_out(77 downto 68), pipelined_control_word=>EX_control_out, NOP_MUX_sel=>'1', flush=>EX_flush);
-	EX_control_out <= RR_EX_out(77 downto 68);
+	CZ_Staller: generic_staller generic map (data_width=>10) port map(control_word=>RR_EX_out(77 downto 68), pipelined_control_word=>EX_control_out, NOP_MUX_sel=>'1', flush=>EX_flush);
+--for debugging only
+	--EX_control_out <= RR_EX_out(77 downto 68);
+--for debugging only
+
 	EX_MEM_in(46 downto 31)<=RR_EX_out(67 downto 52);
 	EX_MEM_in(30 downto 21)<=EX_control_out;--ControlWord
 	--EX_MEM_in(68 downto 53)<=RR_EX_out(97 downto 82);--LHI or PC+IMM
@@ -169,14 +179,16 @@ begin
 						 updated_z_flag=>updated_z_flag);
 
 
-	--MEM_Staller: generic_staller generic map (data_width=>5) port map(control_word=>EX_MEM_out(76 downto 72), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>reset); --NOP dependent only on reset bit here
-	MEM_control_out <= EX_MEM_out(28 downto 24);
+	MEM_Staller: generic_staller generic map (data_width=>8) port map(control_word=>EX_MEM_out(28 downto 21), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>reset); --NOP dependent only on reset bit here
+--for debugging only
+	--MEM_control_out <= EX_MEM_out(28 downto 24);
+--for debugging only
 
 	MEM_FWD_MUX: mux_2to1 port map(input0=>EX_MEM_out(20 downto 5),--alu_out or shifted or Rs1
 									 input1=>mem_out, output0=>MEM_FWD, select_signal=>is_load_type);
 
 	 
-	MEM_WB_in(25 downto 21)<=MEM_control_out; MEM_WB_in(20 downto 18)<=EX_MEM_out(2 downto 0);--Rd
+	MEM_WB_in(25 downto 21)<=MEM_control_out(7 downto 3); MEM_WB_in(20 downto 18)<=EX_MEM_out(2 downto 0);--Rd
 	MEM_WB_in(17 downto 2)<=MEM_FWD; --D3
 	MEM_WB_in(1)<=EX_MEM_out(4); MEM_WB_in(0)<=updated_z_flag;
 

@@ -26,8 +26,9 @@ begin
 	--MEM_MUX: mux_2to1 port map (input0=>alu_out, input1=>RA_plus_n, output0=>MEM_MUX_out, select_signal=>mem_address_sel);
 	data_mem: bram port map (address=>mem_in, data_i=>Rs1, we=>mem_write, data_o=>temp_mem_out, clk=>clk);
 
-	new_z_flag(0) <= temp_mem_out(0) or temp_mem_out(1) or temp_mem_out(2) or temp_mem_out(3) or temp_mem_out(4) or temp_mem_out(5)
-					or temp_mem_out(6) or temp_mem_out(7);
+	new_z_flag(0) <= not(temp_mem_out(0) or temp_mem_out(1) or temp_mem_out(2) or temp_mem_out(3) or temp_mem_out(4) or temp_mem_out(5)
+					or temp_mem_out(6) or temp_mem_out(7) or temp_mem_out(8) or temp_mem_out(9) or temp_mem_out(10) or temp_mem_out(11)
+					or temp_mem_out(12) or temp_mem_out(13) or temp_mem_out(14) or temp_mem_out(15));
 	mem_out <= temp_mem_out;
 
 	old_z_flag(0) <= z_flag_in;

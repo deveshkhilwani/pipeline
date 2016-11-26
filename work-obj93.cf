@@ -1,15 +1,110 @@
 v 3
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Pipelined_IITB_RISC.vhd" "20161126140826.000" "20161126193828.939":
-  entity pipelined_iitb_risc at 1( 0) + 0 on 71;
-  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 72;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/WB.vhd" "20161126121357.000" "20161126174358.298":
-  entity wb at 1( 0) + 0 on 56;
-  architecture arch of wb at 25( 762) + 0 on 57;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/MEM.vhd" "20161126113919.000" "20161126170923.847":
-  entity mem at 1( 0) + 0 on 54;
-  architecture arch of mem at 19( 414) + 0 on 55;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Decoder.vhd" "20161126103047.000" "20161126193229.305":
-  entity decoder at 1( 0) + 0 on 63;
-  architecture arch of decoder at 17( 400) + 0 on 64;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/components.vhd" "20161126140200.000" "20161126193203.369":
-  package components at 1( 0) + 0 on 58;
+file . "xorer.vhd" "20161024094022.000" "20161126212240.685":
+  entity xorer at 1( 0) + 0 on 1161;
+  architecture waddup of xorer at 7( 159) + 0 on 1162;
+file . "staller.vhd" "20161125130756.000" "20161126212240.615":
+  entity generic_staller at 1( 0) + 0 on 1157;
+  architecture arch of generic_staller at 16( 352) + 0 on 1158;
+file . "sign_ext9.vhd" "20161124103701.000" "20161126212240.485":
+  entity sign_ext9 at 1( 0) + 0 on 1153;
+  architecture taes of sign_ext9 at 8( 160) + 0 on 1154;
+file . "shift7.vhd" "20161024094022.000" "20161126212240.436":
+  entity shift7 at 1( 0) + 0 on 1149;
+  architecture tittaes of shift7 at 8( 157) + 0 on 1150;
+file . "RF_decoder.vhd" "20161124104925.000" "20161126212240.339":
+  entity rf_decoder at 1( 0) + 0 on 1145;
+  architecture hood of rf_decoder at 7( 160) + 0 on 1146;
+file . "priority_encoder_4to2.vhd" "20161124103701.000" "20161126212240.194":
+  entity priority_encoder_4to2 at 1( 0) + 0 on 1141;
+  architecture arch of priority_encoder_4to2 at 13( 213) + 0 on 1142;
+file . "NOP_mux.vhd" "20161125130756.000" "20161126212239.871":
+  entity nop_mux at 1( 0) + 0 on 1137;
+  architecture arch of nop_mux at 18( 443) + 0 on 1138;
+file . "mux_4to1.vhd" "20161124211103.000" "20161126212239.816":
+  entity mux_4to1 at 1( 0) + 0 on 1133;
+  architecture arch of mux_4to1 at 15( 486) + 0 on 1134;
+file . "MEM.vhd" "20161126153514.000" "20161126212239.747":
+  entity mem at 1( 0) + 0 on 1129;
+  architecture arch of mem at 19( 414) + 0 on 1130;
+file . "i_mem.vhd" "20161126155233.000" "20161126212239.675":
+  entity i_mem at 1( 0) + 0 on 1125;
+  architecture behavioral of i_mem at 12( 247) + 0 on 1126;
+file . "ID.vhd" "20161125130756.000" "20161126212239.552":
+  entity id at 1( 0) + 0 on 1121;
+  architecture arch of id at 25( 677) + 0 on 1122;
+file . "HDU_Control.vhd" "20161125202223.000" "20161126212239.440":
+  entity hdu_control at 1( 0) + 0 on 1117;
+  architecture arch of hdu_control at 18( 421) + 0 on 1118;
+file . "generic_mux_2to1.vhd" "20161124214303.000" "20161126212239.382":
+  entity generic_mux_2to1 at 1( 0) + 0 on 1113;
+  architecture arch of generic_mux_2to1 at 14( 366) + 0 on 1114;
+file . "flag_forwarding_block.vhd" "20161125215654.000" "20161126212239.306":
+  entity flag_forwarding_block at 1( 0) + 0 on 1109;
+  architecture arch of flag_forwarding_block at 22( 787) + 0 on 1110;
+file . "EX.vhd" "20161125185632.000" "20161126212239.252":
+  entity ex at 1( 0) + 0 on 1105;
+  architecture arch of ex at 18( 382) + 0 on 1106;
+file . "DataRegister.vhd" "20161124103701.000" "20161126212239.061":
+  entity dataregister at 1( 0) + 0 on 1101;
+  architecture behave of dataregister at 9( 258) + 0 on 1102;
+file . "alu.vhd" "20161125092106.000" "20161126212242.009":
+  entity alu at 1( 0) + 0 on 1167;
+  architecture paratha of alu at 13( 286) + 0 on 1168;
+file . "components.vhd" "20161126141138.000" "20161126212238.984":
+  package components at 1( 0) + 0 on 1098;
+file . "adder.vhd" "20161125091938.000" "20161126212238.875":
+  entity adder at 1( 0) + 0 on 1090;
+  architecture serial of adder at 6( 158) + 0 on 1091;
+file . "comparator.vhd" "20161124103701.000" "20161126212241.971":
+  entity comparator3 at 1( 0) + 0 on 1163;
+  architecture arch of comparator3 at 14( 230) + 0 on 1164;
+  entity comparator5 at 21( 374) + 0 on 1165;
+  architecture arch of comparator5 at 34( 604) + 0 on 1166;
+file . "data_forwarding_block.vhd" "20161125181501.000" "20161126212239.022":
+  entity data_forwarding_block at 1( 0) + 0 on 1099;
+  architecture arch of data_forwarding_block at 20( 568) + 0 on 1100;
+file . "Decoder.vhd" "20161126141138.000" "20161126212239.089":
+  entity decoder at 1( 0) + 0 on 1103;
+  architecture arch of decoder at 17( 400) + 0 on 1104;
+file . "final_test.vhd" "20161125191118.000" "20161126212239.281":
+  entity final_test at 1( 0) + 0 on 1107;
+  architecture behave of final_test at 8( 110) + 0 on 1108;
+file . "full_adder.vhd" "20161125092238.000" "20161126212239.355":
+  entity full_adder at 1( 0) + 0 on 1111;
+  architecture serial of full_adder at 6( 163) + 0 on 1112;
+file . "generic_mux_4to1.vhd" "20161125090752.000" "20161126212239.407":
+  entity generic_mux_4to1 at 1( 0) + 0 on 1115;
+  architecture arch of generic_mux_4to1 at 16( 575) + 0 on 1116;
+file . "HDU_Data.vhd" "20161125130756.000" "20161126212239.503":
+  entity hdu_data at 1( 0) + 0 on 1119;
+  architecture arch of hdu_data at 21( 541) + 0 on 1120;
+file . "I_Fetch.vhd" "20161125172033.000" "20161126212239.622":
+  entity i_fetch at 1( 0) + 0 on 1123;
+  architecture arch of i_fetch at 22( 613) + 0 on 1124;
+file . "memory.vhd" "20161125163551.000" "20161126212239.709":
+  entity bram at 1( 0) + 0 on 1127;
+  architecture behavioral of bram at 14( 313) + 0 on 1128;
+file . "mux_2to1.vhd" "20161124211002.000" "20161126212239.792":
+  entity mux_2to1 at 1( 0) + 0 on 1131;
+  architecture arch of mux_2to1 at 13( 299) + 0 on 1132;
+file . "nander.vhd" "20161024094022.000" "20161126212239.844":
+  entity nander at 1( 0) + 0 on 1135;
+  architecture waddup of nander at 7( 160) + 0 on 1136;
+file . "Pipelined_IITB_RISC.vhd" "20161126150550.000" "20161126212239.904":
+  entity pipelined_iitb_risc at 1( 0) + 0 on 1139;
+  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 1140;
+file . "reg_file.vhd" "20161124104859.000" "20161126212240.223":
+  entity reg_file at 1( 0) + 0 on 1143;
+  architecture mudi of reg_file at 20( 522) + 0 on 1144;
+file . "RR.vhd" "20161125180245.000" "20161126212240.382":
+  entity rr at 1( 0) + 0 on 1147;
+  architecture arch of rr at 28( 906) + 0 on 1148;
+file . "sign_ext6.vhd" "20161124103701.000" "20161126212240.460":
+  entity sign_ext6 at 1( 0) + 0 on 1151;
+  architecture taes of sign_ext6 at 8( 160) + 0 on 1152;
+file . "special_pe.vhd" "20161125130756.000" "20161126212240.513":
+  entity special_pe at 1( 0) + 0 on 1155;
+  architecture arrange of special_pe at 13( 283) + 0 on 1156;
+file . "WB.vhd" "20161126141138.000" "20161126212240.649":
+  entity wb at 1( 0) + 0 on 1159;
+  architecture arch of wb at 25( 764) + 0 on 1160;

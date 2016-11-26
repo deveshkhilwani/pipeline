@@ -16,6 +16,8 @@ architecture Behavioral of i_mem is
 type ram_t is array (0 to 65535) of std_logic_vector(15 downto 0);
 signal ram : ram_t := (
      0=>"0100001110000000",
+     1=>"0001001000000001",
+     --2=>"0000000000000000",
 others=>"0011000000000010"
 );--(others => '0'));
 
