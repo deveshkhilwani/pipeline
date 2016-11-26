@@ -33,7 +33,7 @@ architecture arch of Pipelined_IITB_RISC is
     signal Rs2:  std_logic_vector(2 downto 0);
     signal Rd, WB_Rd:  std_logic_vector(2 downto 0);
     signal SE6:  std_logic_vector(15 downto 0);
-    signal ID_MUX, EX_FWD, MEM_FWD, WB_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
+    signal ID_MUX, EX_FWD, EX_FWD_signal, MEM_FWD, WB_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
     signal NOP_MUX_sel, is_LMSM, is_load_type, rr_mem_read: std_logic;
     signal data_select1, data_select2: std_logic_vector(2 downto 0);
     signal R7_write: std_logic:='1';
@@ -166,8 +166,8 @@ begin
 	--EX_MEM_in(18 downto 3)<=RR_EX_out(67 downto 52);--Rs1
 	EX_MEM_in(2 downto 0)<=RR_EX_out(35 downto 33); --Rd
 
-	EX_FWD_MUX: mux_4to1 port map(input0=>alu_out, input1=>C0, input2=>RR_EX_out(97 downto 82), input3=>RR_EX_out(67 downto 52), output0=>EX_FWD, select_signal=>EX_control_out(7 downto 6));
-
+	EX_FWD_MUX: mux_4to1 port map(input0=>alu_out, input1=>alu_out, input2=>RR_EX_out(97 downto 82), input3=>RR_EX_out(67 downto 52), output0=>EX_FWD_signal, select_signal=>EX_control_out(7 downto 6));
+	EX_FWD_MUX2: mux_2to1 port map(input0=>EX_FWD_signal, input1=>RR_EX_out(15 downto 0), output0=>EX_FWD, select_signal=>RR_EX_out(16));
 	--input to EX/MEM Register
 	new_EX_MEM_in <= ex_mem_c0 when reset='1' else EX_MEM_in;
 	EX_MEM: DataRegister generic map(data_width=>47) port map(Din=>new_EX_MEM_in , Dout=>EX_MEM_out , Enable=>EX_MEM_en , clk=>clk); --ID/RR register
