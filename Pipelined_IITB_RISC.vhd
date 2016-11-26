@@ -48,7 +48,7 @@ architecture arch of Pipelined_IITB_RISC is
 	signal c_out, z_out, nop_bit, updated_z_flag, new_RF_write: std_logic;
 	signal global_flag_out, new_flag_write: std_logic_vector(1 downto 0);
 
-	constant if_id_c0: std_logic_vector(48 downto 0):=(others=>'0') ;
+	constant if_id_c0: std_logic_vector(48 downto 0):=(others=>'1') ;
 	constant id_rr_c0: std_logic_vector(82 downto 0):=(others=>'0') ;
 	constant rr_ex_c0: std_logic_vector(97 downto 0):=(others=>'0') ;
 	constant ex_mem_c0: std_logic_vector(78 downto 0):=(others=>'0') ;

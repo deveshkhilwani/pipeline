@@ -29,6 +29,7 @@ begin
 
 	new_z_flag(0) <= temp_mem_out(0) or temp_mem_out(1) or temp_mem_out(2) or temp_mem_out(3) or temp_mem_out(4) or temp_mem_out(5)
 					or temp_mem_out(6) or temp_mem_out(7);
+	mem_out <= temp_mem_out;
 
 	old_z_flag(0) <= z_flag_in;
 	z_mux_sel <= z_enable and is_load_type;
