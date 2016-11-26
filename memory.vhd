@@ -17,7 +17,14 @@ architecture Behavioral of bram is
 --with each element being 8 bit wide.
 type ram_t is array (0 to 65535) of std_logic_vector(15 downto 0);
 signal ram : ram_t := (
-     0=>"0100111110000000",
+     0=>"0000000000000001",
+     1=>"0000000000000011",
+     2=>"0000000000000101",
+     3=>"0000000000000110",
+     4=>"0000000000000001",
+     5=>"0000000000001001",
+     6=>"0000000010000001",
+     7=>"0000000010000001",
 others=>"0000000000000000"
 );--(others => '0'));
 

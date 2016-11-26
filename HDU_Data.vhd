@@ -35,8 +35,8 @@ i1: comparator5 port map(x(4)=>instruction_word(15), x(3)=>instruction_word(14),
 stall<=((source1_compare or source2_compare) and (isLW or isLM)) or (isANZ and isLW);
 LM_SM_stall<=isLM or isSM;
 
-R7_en<= (not stall) and (not (LM_SM_stall and (not PE_Flag)));
-IF_ID_en<= (not stall) and (not (LM_SM_stall and (not PE_Flag)));
+R7_en<= (not stall) and (not (LM_SM_stall and PE_Flag));
+IF_ID_en<= (not stall) and (not (LM_SM_stall and PE_Flag));
 NOP_mux_sel<= not stall;  --if NOP_MUX_sel = 0, RW,FW,MW = 000; 
 
 end arch ; -- arch

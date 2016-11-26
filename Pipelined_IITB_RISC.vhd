@@ -68,7 +68,7 @@ begin
 
 	-----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Decode: ID port map (IW=>IF_ID_out(48 downto 33), PC=>IF_ID_out(16 downto 1), PE_Flag=>PE_Flag, PE_input_sel=>ID_RR_out(0), PE_input=>IF_ID_out(40 downto 33),
+	Decode: ID port map (IW=>IF_ID_out(48 downto 33), PC=>IF_ID_out(16 downto 1), PE_Flag=>PE_Flag, PE_input_sel=>ID_RR_out(0), PE_input=>ID_RR_out(65 downto 58),
 							 control_word=>control_word, PE_out=>PE_out, Rs1=>Rs1, Rs2=>Rs2, Rd=>Rd, SE6=>SE6, ID_MUX=>ID_MUX, is_LMSM=>is_LMSM, CZ_depend=>CZ_depend); --decoder
 	
 	ID_flush<=ID_flush1 or IF_flush; --flush logic. To flush when flush was asserted in IF or ID.
@@ -119,7 +119,7 @@ begin
 
 	Flag_FW: flag_forwarding_block port map(ex_flag_en=>RR_EX_out(72 downto 71), mem_flag_en=>EX_MEM_out(25 downto 24), wb_flag_en=>MEM_WB_out(22 downto 21),
 											ex_flag_value(1)=>c_out, ex_flag_value(0)=>z_out,
-											mem_flag_value(1)=>MEM_WB_in(17), mem_flag_value(0)=>MEM_WB_in(16), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>CZ_depend,
+											mem_flag_value(1)=>MEM_WB_in(1), mem_flag_value(0)=>MEM_WB_in(0), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>ID_RR_out(82 downto 81),
 											nop_bit=>nop_bit); 
 
 	RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>RR_flush); --NOP dependent only on flush bit here
@@ -202,7 +202,7 @@ begin
 	new_flag_write(1) <= MEM_WB_out(22) and (not reset);
 	new_flag_write(0) <= MEM_WB_out(21) and (not reset);
 
-	Write_Back: WB port map (flag_out(1)=>MEM_WB_out(1), flag_out(0)=>MEM_WB_out(0),clk=>clk,reset=>reset,
+	Write_Back: WB port map (flag_out(1)=>MEM_WB_out(1), flag_out(0)=>MEM_WB_out(0),clk=>clk,reset=>reset, global_flag_out=>global_flag_out,
 							 flag_write=>new_flag_write);
 
 	WB_FWD<=MEM_WB_out(17 downto 2);
