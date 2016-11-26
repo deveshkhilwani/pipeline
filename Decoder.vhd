@@ -25,22 +25,22 @@ begin
 CZ_control<= ( ( (not instruction_word(15)) and (not (instruction_word(14))) ) and (not (instruction_word(12))));--Checking Arithmetic except ADI
 
 CZ_depend<=instruction_word(1 downto 0) when CZ_control='1' else "00";
-control_word(19)<='1' when instruction_word(15 downto 12) = "0111";
-control_word(18)<='1' when instruction_word(15 downto 12) = "0110";
+control_word(19)<='1' when instruction_word(15 downto 12) = "0111" else '0'; --assigning a default value of 0 
+control_word(18)<='1' when instruction_word(15 downto 12) = "0110" else '0';
 control_word(17 downto 3)<=      "000000000000111" when (instruction_word(15 downto 12)="0000")
 							else "000000010000111" when (instruction_word(15 downto 12)="0001")
 							else "000001000000101" when (instruction_word(15 downto 12)="0010")
 							else "000000000010100" when (instruction_word(15 downto 12)="0011")
-							else "000000010001101" when (instruction_word(15 downto 12)="0100")
+							else "000000100001101" when (instruction_word(15 downto 12)="0100")
 							else "000000100100000" when (instruction_word(15 downto 12)="0101")	
-							else "001100001001100" when (instruction_word(15 downto 12)="0110")
+							else "001100000001100" when (instruction_word(15 downto 12)="0110")
 							else "001100001100000" when (instruction_word(15 downto 12)="0111")
-							else "100000000011100" when (instruction_word(15 downto 12)="1000")
-							else "000000000011100" when (instruction_word(15 downto 12)="1001")
+							else "100000000011000" when (instruction_word(15 downto 12)="1000")
+							else "000000000011000" when (instruction_word(15 downto 12)="1001")
 							else "010010000000000" when (instruction_word(15 downto 12)="1100")
 			;
-c1<= '1' when instruction_word(15 downto 12) ="0011" else '0';
-c2<= '1' when instruction_word(15 downto 12) ="1000" else '0';
+c1<= '1' when instruction_word(15 downto 12) ="0011" else '0'; -- LHI 
+c2<= '1' when instruction_word(15 downto 12) ="1000" else '0'; --JAL 
 ID_select<= c1 or c2; 
 
 RR_select<= '1' when instruction_word(15 downto 12) ="1001" else '0';
