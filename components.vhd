@@ -296,32 +296,26 @@ package components is
         port(
             Rs1: in std_logic_vector(15 downto 0);
             mem_address_sel: in std_logic;
-            RA_plus_n: in std_logic_vector(15 downto 0); --for LM, SM
-            alu_out: in std_logic_vector(15 downto 0);
+            mem_in: in std_logic_vector(15 downto 0);
             mem_write: in std_logic;
             mem_out: out std_logic_vector(15 downto 0);
-            updated_z_flag: out std_logic;
             z_flag_in,z_enable,is_load_type: in std_logic;
+            updated_z_flag: out std_logic;
             clk: in std_logic
             );
     end component;
 
     component WB is 
         port(
-            wb_address_sel: in std_logic_vector(1 downto 0);
-            mem_out: in std_logic_vector(15 downto 0); --for LM, SM
-            alu_out: in std_logic_vector(15 downto 0); --arithmetic instructions
-            PC_plus_Imm_or_shifter: in std_logic_vector(15 downto 0);
-            flag_out: in std_logic_vector(1 downto 0);
-            RF_write: in std_logic;
-            flag_write: in std_logic_vector(1 downto 0);
-            global_flag_out: out std_logic_vector(1 downto 0);
-            Rs1: in std_logic_vector(15 downto 0);
-
-            --WB_Rd: out std_logic_vector(2 downto 0);
-            WB_MUX_out: out std_logic_vector(15 downto 0);
-            clk: in std_logic;
-            reset: in std_logic
+        flag_out: in std_logic_vector(1 downto 0);
+        --RF_write: in std_logic;
+        flag_write: in std_logic_vector(1 downto 0);
+        --Rs1: in std_logic_vector(15 downto 0);
+        --WB_Rd: out std_logic_vector(2 downto 0);
+        --WB_MUX_out: out std_logic_vector(15 downto 0);
+        global_flag_out: out std_logic_vector(1 downto 0);
+        clk: in std_logic;
+        reset: in std_logic
             );
     end component;
 

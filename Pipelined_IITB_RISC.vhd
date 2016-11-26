@@ -33,8 +33,8 @@ architecture arch of Pipelined_IITB_RISC is
     signal Rs2:  std_logic_vector(2 downto 0);
     signal Rd, WB_Rd:  std_logic_vector(2 downto 0);
     signal SE6:  std_logic_vector(15 downto 0);
-    signal ID_MUX:  std_logic_vector(15 downto 0);
-    signal NOP_MUX_sel, is_LMSM: std_logic;
+    signal ID_MUX, EX_FWD, MEM_FWD:  std_logic_vector(15 downto 0);--EX_FWD is output of EX stage
+    signal NOP_MUX_sel, is_LMSM, is_load_type: std_logic;
     signal data_select1, data_select2: std_logic_vector(2 downto 0);
     signal R7_write: std_logic:='1';
 	signal id_rr_out, id_rr_in, new_ID_RR_in: std_logic_vector(82 downto 0);
@@ -43,61 +43,18 @@ architecture arch of Pipelined_IITB_RISC is
 	signal MEM_control_out: std_logic_vector(4 downto 0);
 	signal flush_assign: std_logic_vector(3 downto 0); 
 	signal RR_EX_in, RR_EX_out, new_RR_EX_in: std_logic_vector(97 downto 0);
-	signal EX_MEM_out, EX_MEM_in, new_EX_MEM_in: std_logic_vector(78 downto 0);
-	signal MEM_WB_out, MEM_WB_in, new_MEM_WB_in: std_logic_vector(73 downto 0);
+	signal EX_MEM_out, EX_MEM_in, new_EX_MEM_in: std_logic_vector(46 downto 0);
+	signal MEM_WB_out, MEM_WB_in, new_MEM_WB_in: std_logic_vector(27 downto 0);
 	signal c_out, z_out, nop_bit, updated_z_flag, new_RF_write: std_logic;
 	signal global_flag_out, new_flag_write: std_logic_vector(1 downto 0);
 
 	constant if_id_c0: std_logic_vector(48 downto 0):=(others=>'1') ;
 	constant id_rr_c0: std_logic_vector(82 downto 0):=(others=>'0') ;
 	constant rr_ex_c0: std_logic_vector(97 downto 0):=(others=>'0') ;
-	constant ex_mem_c0: std_logic_vector(78 downto 0):=(others=>'0') ;
-	constant mem_wb_c0: std_logic_vector(73 downto 0):=(others=>'0') ;
-	--RF_write: in std_logic ;
-	--reg_file_A1: in std_logic_vector(2 downto 0) ;
-	--reg_file_A2: in std_logic_vector(2 downto 0) ;
-	--reg_file_A3: in std_logic_vector(2 downto 0) ;
-	--reg_file_D3: in std_logic_vector(15 downto 0) ;
-	--ex_data: in std_logic_vector(15 downto 0) ;
-	--mem_data: in std_logic_vector(15 downto 0) ;
-	--wb_data: in std_logic_vector(15 downto 0) ;
-	--incremented_PC: in std_logic_vector(15 downto 0) ;
-	--input1_mux_sel: in std_logic_vector(2 downto 0) ;
-	--input2_mux_sel: in std_logic_vector(2 downto 0) ;
-	--is_LMSM: in std_logic ;
-	--alu_a_input: out std_logic_vector(15 downto 0) ;
-	--alu_b_input: out std_logic_vector(15 downto 0) ;
-	--LMSM_memaddress_out: out std_logic_vector(15 downto 0) ;
-	--LMSM_memaddress_in: in std_logic_vector(15 downto 0) ;
+	constant ex_mem_c0: std_logic_vector(46 downto 0):=(others=>'0') ;
+	constant mem_wb_c0: std_logic_vector(27 downto 0):=(others=>'0') ;
+	constant c0: std_logic_vector(15 downto 0):=(others=>'0');
 
-
-
-	--source_reg_address: in std_logic_vector(2 downto 0) ;
-	--ex_RF_write: in std_logic ;
-	--ex_destination_reg_address: in std_logic_vector(2 downto 0) ;
-	--mem_RF_write: in std_logic ;
-	--mem_destination_reg_address: in std_logic_vector(2 downto 0) ;
-	--wb_RF_write: in std_logic ;
-	--wb_destination_reg_address: in std_logic_vector(2 downto 0) ;
-	--data_select: out std_logic_vector(2 downto 0)
-
-
-	--	Rs1, Rs2: in std_logic_vector(15 downto 0);
-	--	SE_6: in std_logic_vector(15 downto 0);
-	--	alu_a_sel, alu_b_sel: in std_logic;
-	--	alu_op: in std_logic_vector(1 downto 0);
-	--	alu_out: out std_logic_vector(15 downto 0);
-	--	c_out: out std_logic;
-	--	z_out: out std_logic;
-
-
-	--	Rs1: in std_logic_vector(15 downto 0);
-	--	mem_address_sel: in std_logic;
-	--	RA_plus_n: in std_logic_vector(15 downto 0); --for LM, SM
-	--	alu_out: in std_logic_vector(15 downto 0);
-	--	mem_write: in std_logic;
-	--	mem_out: out std_logic_vector(15 downto 0);
-	--	clk: in std_logic;
 
 begin
 	--PCMUX: 
@@ -145,25 +102,25 @@ begin
 	-----------------------------------------------------------------------------------------------------------------------------------------------
 	FW1: data_forwarding_block port map(source_reg_address=>ID_RR_out(57 downto 55), ex_RF_write=>RR_EX_out(73),--RF_write
 										ex_destination_reg_address=>RR_EX_out(35 downto 33),--Rd
-										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0),RR_d3_mux_sel=>ID_RR_out(73 downto 72),
-										wb_RF_write=>MEM_WB_out(55), wb_destination_reg_address=>MEM_WB_out(52 downto 50), data_select=>data_select1);
+										mem_RF_write=>EX_MEM_out(26), mem_destination_reg_address=>EX_MEM_out(2 downto 0),RR_d3_mux_sel=>ID_RR_out(73 downto 72),
+										wb_RF_write=>new_RF_write, wb_destination_reg_address=>MEM_WB_out(20 downto 18), data_select=>data_select1);
 
 	
 	FW2: data_forwarding_block port map(source_reg_address=>ID_RR_out(54 downto 52), ex_RF_write=>RR_EX_out(73),
 										ex_destination_reg_address=>RR_EX_out(35 downto 33),RR_d3_mux_sel=>ID_RR_out(73 downto 72),
-										mem_RF_write=>EX_MEM_out(74), mem_destination_reg_address=>EX_MEM_out(2 downto 0), 
-										wb_RF_write=>MEM_WB_out(55), wb_destination_reg_address=>MEM_WB_out(52 downto 50), data_select=>data_select2);
+										mem_RF_write=>EX_MEM_out(26), mem_destination_reg_address=>EX_MEM_out(2 downto 0), 
+										wb_RF_write=>new_RF_write, wb_destination_reg_address=>MEM_WB_out(20 downto 18), data_select=>data_select2);
 
-	Flag_FW: flag_forwarding_block port map(ex_flag_en=>RR_EX_out(72 downto 71), mem_flag_en=>EX_MEM_out(73 downto 72), wb_flag_en=>MEM_WB_out(54 downto 53),
+	Flag_FW: flag_forwarding_block port map(ex_flag_en=>RR_EX_out(72 downto 71), mem_flag_en=>EX_MEM_out(25 downto 24), wb_flag_en=>MEM_WB_out(22 downto 21),
 											ex_flag_value(1)=>c_out, ex_flag_value(0)=>z_out,
 											mem_flag_value(1)=>MEM_WB_in(17), mem_flag_value(0)=>MEM_WB_in(16), wb_flag_value=>MEM_WB_out(17 downto 16),global_flag_value=>global_flag_out, CZ_dependence=>CZ_depend,
 											nop_bit=>nop_bit); 
 
 	--RR_Staller: generic_staller generic map (data_width=>14) port map(control_word=>ID_RR_out(79 downto 66), pipelined_control_word=>RR_control_out, NOP_MUX_sel=>nop_bit, flush=>RR_flush); --NOP dependent only on flush bit here
 	RR_control_out<= ID_RR_out(79 downto 66);
-
-	RRead: RR port map (RF_write=>ID_RR_out(71), reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
-						reg_file_D3=>WB_MUX_out, ex_data=>alu_out, mem_data=>mem_out, wb_data=>WB_MUX_out, incremented_PC=>ID_RR_out(16 downto 1), 
+--Check This!
+	RRead: RR port map (RF_write=>new_RF_write, reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
+						reg_file_D3=>MEM_WB_out(17 downto 2), ex_data=>alu_out, mem_data=>mem_out, wb_data=>WB_MUX_out, incremented_PC=>ID_RR_out(16 downto 1), 
 						input1_mux_sel=>data_select1, input2_mux_sel=>data_select2, is_LMSM=>RR_EX_out(16),--is_LMSM
 						LMSM_memaddress_in=>RR_EX_out(15 downto 0), --RA+1
 						alu_a_input=>alu_a_input,
@@ -187,49 +144,56 @@ begin
 	
 	--CZ_Staller: generic_staller generic map (data_width=>10) port map(control_word=>RR_EX_out(77 downto 68), pipelined_control_word=>EX_control_out, NOP_MUX_sel=>'1', flush=>EX_flush);
 	EX_control_out <= RR_EX_out(77 downto 68);
-
-	EX_MEM_in(78 downto 69)<=EX_control_out;--ControlWord
-	EX_MEM_in(68 downto 53)<=RR_EX_out(97 downto 82);--LHI or PC+IMM
-	EX_MEM_in(52 downto 37)<=RR_EX_out(15 downto 0); --RA+1
-	EX_MEM_in(36 downto 21)<=alu_out;
-	EX_MEM_in(20)<=c_out;
-	EX_MEM_in(19)<=z_out;
-	EX_MEM_in(18 downto 3)<=RR_EX_out(67 downto 52);--Rs1
+	EX_MEM_in(46 downto 31)<=RR_EX_out(67 downto 52);
+	EX_MEM_in(30 downto 21)<=EX_control_out;--ControlWord
+	--EX_MEM_in(68 downto 53)<=RR_EX_out(97 downto 82);--LHI or PC+IMM
+	--EX_MEM_in(52 downto 37)<=RR_EX_out(15 downto 0); --RA+1
+	--EX_MEM_in(36 downto 21)<=alu_out;
+	EX_MEM_in(20 downto 5)<=EX_FWD;
+	EX_MEM_in(4)<=c_out;
+	EX_MEM_in(3)<=z_out;
+	--EX_MEM_in(18 downto 3)<=RR_EX_out(67 downto 52);--Rs1
 	EX_MEM_in(2 downto 0)<=RR_EX_out(35 downto 33); --Rd
+
+	EX_FWD_MUX: mux_4to1 port map(input0=>alu_out, input1=>C0, input2=>RR_EX_out(97 downto 82), input3=>RR_EX_out(67 downto 52), output0=>EX_FWD, select_signal=>EX_control_out(7 downto 6));
 
 	--input to EX/MEM Register
 	new_EX_MEM_in <= ex_mem_c0 when reset='1' else EX_MEM_in;
-	EX_MEM: DataRegister generic map(data_width=>79) port map(Din=>new_EX_MEM_in , Dout=>EX_MEM_out , Enable=>EX_MEM_en , clk=>clk); --ID/RR register
+	EX_MEM: DataRegister generic map(data_width=>47) port map(Din=>new_EX_MEM_in , Dout=>EX_MEM_out , Enable=>EX_MEM_en , clk=>clk); --ID/RR register
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+	is_load_type<=(not EX_MEM_out(28)) and EX_MEM_out(27);
 
-	Memory: MEM port map(Rs1=>EX_MEM_out(18 downto 3), mem_address_sel=>EX_MEM_out(78), RA_plus_n=>EX_MEM_out(52 downto 37), alu_out=>EX_MEM_out(36 downto 21),
-						 mem_write=>EX_MEM_out(77), mem_out=>mem_out, clk=>clk, z_flag_in=>EX_MEM_out(19), z_enable=>EX_MEM_out(73), is_load_type=>EX_MEM_out(77),
+	Memory: MEM port map(Rs1=>EX_MEM_out(46 downto 31), mem_address_sel=>EX_MEM_out(30), mem_in=>EX_MEM_out(20 downto 5), mem_write=>EX_MEM_out(29), mem_out=>mem_out, clk=>clk, z_flag_in=>EX_MEM_out(3), z_enable=>EX_MEM_out(24),
+						 is_load_type=>is_load_type,
 						 updated_z_flag=>updated_z_flag);
 
 
 	--MEM_Staller: generic_staller generic map (data_width=>5) port map(control_word=>EX_MEM_out(76 downto 72), pipelined_control_word=>MEM_control_out, NOP_MUX_sel=>'1', flush=>reset); --NOP dependent only on reset bit here
-	MEM_control_out <= EX_MEM_out(76 downto 72);
+	MEM_control_out <= EX_MEM_out(28 downto 24);
 
-	MEM_WB_in(73 downto 58)<=EX_MEM_out(18 downto 3); 
-	MEM_WB_in(57 downto 53)<=MEM_control_out; MEM_WB_in(52 downto 50)<=EX_MEM_out(2 downto 0);MEM_WB_in(49 downto 34)<=EX_MEM_out(36 downto 21); 
-	MEM_WB_in(33 downto 18)<=mem_out;MEM_WB_in(17)<=EX_MEM_out(20); MEM_WB_in(16)<=updated_z_flag; MEM_WB_in(15 downto 0)<=EX_MEM_out(68 downto 53);
+	MEM_FWD_MUX: mux_2to1 port map(input0=>EX_MEM_out(20 downto 5),--alu_out or shifted or Rs1
+									 input1=>mem_out, output0=>MEM_FWD, select_signal=>is_load_type);
+
+	 
+	MEM_WB_in(25 downto 21)<=MEM_control_out; MEM_WB_in(20 downto 18)<=EX_MEM_out(2 downto 0);--Rd
+	MEM_WB_in(17 downto 2)<=MEM_FWD; --D3
+	MEM_WB_in(1)<=EX_MEM_out(4); MEM_WB_in(0)<=updated_z_flag;
 
 	new_MEM_WB_in <= mem_wb_c0 when reset='1' else MEM_WB_in;
-	MEM_WB: DataRegister generic map(data_width=>74) port map(Din=>new_MEM_WB_in , Dout=>MEM_WB_out , Enable=>MEM_WB_en , clk=>clk); --MEM/WB register
+	MEM_WB: DataRegister generic map(data_width=>26) port map(Din=>new_MEM_WB_in , Dout=>MEM_WB_out , Enable=>MEM_WB_en , clk=>clk); --MEM/WB register
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	new_RF_write <= MEM_WB_out(55)	and (not reset);
-	new_flag_write(1) <= MEM_WB_out(54) and (not reset);
-	new_flag_write(0) <= MEM_WB_out(53) and (not reset);
+	new_RF_write <= MEM_WB_out(23)	and (not reset);
+	new_flag_write(1) <= MEM_WB_out(22) and (not reset);
+	new_flag_write(0) <= MEM_WB_out(21) and (not reset);
 
-	Write_Back: WB port map (wb_address_sel=>MEM_WB_out(57 downto 56), mem_out=>MEM_WB_out(33 downto 18), alu_out=>MEM_WB_out(49 downto 34), 
-							 PC_plus_Imm_or_shifter=>MEM_WB_out(15 downto 0), flag_out(1)=>MEM_WB_out(17), flag_out(0)=>MEM_WB_out(16),clk=>clk,reset=>reset,
-							 RF_write=>new_RF_write, flag_write=>new_flag_write, WB_MUX_out=>WB_MUX_out, Rs1=>MEM_WB_out(73 downto 58));
+	Write_Back: WB port map (flag_out(1)=>MEM_WB_out(1), flag_out(0)=>MEM_WB_out(0),clk=>clk,reset=>reset,
+							 flag_write=>new_flag_write);
 
 
-	WB_RD<=MEM_WB_out(52 downto 50);
+	WB_RD<=MEM_WB_out(20 downto 18);
 
 
 end architecture ; -- arch

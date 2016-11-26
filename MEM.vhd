@@ -7,8 +7,7 @@ entity MEM is
 port(
 		Rs1: in std_logic_vector(15 downto 0);
 		mem_address_sel: in std_logic;
-		RA_plus_n: in std_logic_vector(15 downto 0); --for LM, SM
-		alu_out: in std_logic_vector(15 downto 0);
+		mem_in: in std_logic_vector(15 downto 0);
 		mem_write: in std_logic;
 		mem_out: out std_logic_vector(15 downto 0);
 		z_flag_in,z_enable,is_load_type: in std_logic;
@@ -24,8 +23,8 @@ architecture arch of MEM is
 	signal z_mux_sel: std_logic;
 	
 begin
-	MEM_MUX: mux_2to1 port map (input0=>alu_out, input1=>RA_plus_n, output0=>MEM_MUX_out, select_signal=>mem_address_sel);
-	data_mem: bram port map (address=>MEM_MUX_out, data_i=>Rs1, we=>mem_write, data_o=>temp_mem_out, clk=>clk);
+	--MEM_MUX: mux_2to1 port map (input0=>alu_out, input1=>RA_plus_n, output0=>MEM_MUX_out, select_signal=>mem_address_sel);
+	data_mem: bram port map (address=>mem_in, data_i=>Rs1, we=>mem_write, data_o=>temp_mem_out, clk=>clk);
 
 	new_z_flag(0) <= temp_mem_out(0) or temp_mem_out(1) or temp_mem_out(2) or temp_mem_out(3) or temp_mem_out(4) or temp_mem_out(5)
 					or temp_mem_out(6) or temp_mem_out(7);

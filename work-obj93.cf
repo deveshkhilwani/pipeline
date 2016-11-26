@@ -1,6 +1,15 @@
 v 3
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/components.vhd" "20161126102413.000" "20161126155559.520":
-  package components at 1( 0) + 0 on 11;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Decoder.vhd" "20161126103047.000" "20161126160056.148":
-  entity decoder at 1( 0) + 0 on 42;
-  architecture arch of decoder at 17( 400) + 0 on 43;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Pipelined_IITB_RISC.vhd" "20161126140222.000" "20161126193224.564":
+  entity pipelined_iitb_risc at 1( 0) + 0 on 61;
+  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 62;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/WB.vhd" "20161126121357.000" "20161126174358.298":
+  entity wb at 1( 0) + 0 on 56;
+  architecture arch of wb at 25( 762) + 0 on 57;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/MEM.vhd" "20161126113919.000" "20161126170923.847":
+  entity mem at 1( 0) + 0 on 54;
+  architecture arch of mem at 19( 414) + 0 on 55;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Decoder.vhd" "20161126103047.000" "20161126193229.305":
+  entity decoder at 1( 0) + 0 on 63;
+  architecture arch of decoder at 17( 400) + 0 on 64;
+file / "/Users/Praveen/Documents/Autumn 2016/pipeline/components.vhd" "20161126140200.000" "20161126193203.369":
+  package components at 1( 0) + 0 on 58;
