@@ -1,6 +1,0 @@
-v 3
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/Pipelined_IITB_RISC.vhd" "20161126192944.000" "20161127005944.460":
-  entity pipelined_iitb_risc at 1( 0) + 0 on 12;
-  architecture arch of pipelined_iitb_risc at 13( 180) + 0 on 13;
-file / "/Users/Praveen/Documents/Autumn 2016/pipeline/components.vhd" "20161126172055.000" "20161127005910.293":
-  package components at 1( 0) + 0 on 11;

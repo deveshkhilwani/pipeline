@@ -20,7 +20,7 @@ end entity;
 
 architecture arch of HDU_Data is
 
-	signal isANZ, isLW, isLM, isSM, source1_compare,source2_compare,stall, LM_SM_stall: std_logic;
+	signal isANZ, isLW, isLM, is_current_SM, is_current_LM, source1_compare,source2_compare,stall, LM_SM_stall: std_logic;
 
 begin
 --data hazard stalls
@@ -29,11 +29,13 @@ c2: comparator3 port map (x=>rr_destination_reg_address, y=>source_reg_address2,
 
 isLW<=rr_mem_read and rr_z_en;
 isLM<=rr_mem_read and (not rr_z_en);
-isSM<='1' when instruction_word(15 downto 12) = "0111" else '0';
+is_current_SM<='1' when instruction_word(15 downto 12) = "0111" else '0';
+is_current_LM<='1' when instruction_word(15 downto 12) = "0110" else '0';
 i1: comparator5 port map(x(4)=>instruction_word(15), x(3)=>instruction_word(14), x(2)=>instruction_word(12), x(1)=>instruction_word(1), x(0)=>instruction_word(0), y=>"00001", equal_flag=>isANZ);
+--isANZ is '1' if instruction is zero or carry dependent.
 
 stall<=((source1_compare or source2_compare) and (isLW or isLM)) or (isANZ and isLW);
-LM_SM_stall<=isLM or isSM;
+LM_SM_stall<=is_current_LM or is_current_SM;
 
 R7_en<= (not stall) and (not (LM_SM_stall and PE_Flag));
 IF_ID_en<= (not stall) and (not (LM_SM_stall and PE_Flag));
