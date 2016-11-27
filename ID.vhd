@@ -36,8 +36,9 @@ begin
 
 	SE6<=SE6_sig;
 	control_word<=control_out(14 downto 0);
-	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig, CZ_depend=>CZ_depend);
-	is_LMSM<=(control_out(19) or control_out(18)) and temp_PE_Flag;
+	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig, CZ_depend=>CZ_depend, from_pe=>Rsel_sig);
+	--is_LMSM<=(control_out(19) or control_out(18));
+	is_LMSM<=(control_out(19) or control_out(18));-- and temp_PE_Flag;
 	PE_input_MUX: generic_mux_2to1 generic map(data_width=>8) port map (input0=>IW(7 downto 0), input1=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
 
 	--PE_input_MUX: mux_2to1 port map(input1=>IW(7 downto 0), input2=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);

@@ -10,6 +10,7 @@ port(
 		Rs1: out std_logic_vector(2 downto 0); 
 		Rs2: out std_logic_vector(2 downto 0); 
 		CZ_depend: out std_logic_vector(1 downto 0);
+		from_pe: in std_logic_vector(2 downto 0);
 		Rd: out std_logic_vector(2 downto 0)
 	);
 end entity;
@@ -59,7 +60,7 @@ LM_select<='1' when instruction_word(15 downto 12) ="0110" else '0';
 If_R7_Ra<= '1' when instruction_word(11 downto 9) ="111" else '0'; -- LHI, LW 
 If_R7_Rb<= '1' when instruction_word(8 downto 6) ="111" else '0'; -- ADI
 If_R7_Rc<= '1' when instruction_word(5 downto 3) ="111" else '0'; -- All Arithmetic operations 
-If_R7_LM<= '1' when instruction_word(7) ='1' else '0';
+If_R7_LM<= '1' when from_pe="111" else '0';
 
 R7d_select_ID<= (c1 and If_R7_Ra) or c2 ; 
 R7d_select_RR<= (RR_select);

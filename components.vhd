@@ -186,6 +186,7 @@ package components is
         Rs1: out std_logic_vector(2 downto 0); 
         Rs2: out std_logic_vector(2 downto 0); 
         Rd: out std_logic_vector(2 downto 0);
+        from_pe: in std_logic_vector(2 downto 0);
         CZ_depend: out std_logic_vector(1 downto 0)
 
     );
@@ -275,6 +276,9 @@ package components is
             alu_b_input: out std_logic_vector(15 downto 0) ;
             LMSM_memaddress_out: out std_logic_vector(15 downto 0) ;
             LMSM_memaddress_in: in std_logic_vector(15 downto 0) ;
+            R7_fwd_RR: out std_logic_vector(15 downto 0);
+
+           -- registered_is_LMSM: out std_logic;
             clk,reset: in std_logic
           ) ;
     end component ; -- RR
