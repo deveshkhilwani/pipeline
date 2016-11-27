@@ -29,6 +29,7 @@ architecture arch of ID is
 	signal PE_input_sig: std_logic_vector(7 downto 0);
 	signal SE6_sig, SE9_sig: std_logic_vector(15 downto 0);
 	signal PC_plus_imm9, PC_plus_imm6, shifted: std_logic_vector(15 downto 0);
+	signal temp_PE_Flag: std_logic;
 	constant C0: std_logic_vector(15 downto 0) := (others => '0');
 	
 begin
@@ -36,11 +37,12 @@ begin
 	SE6<=SE6_sig;
 	control_word<=control_out(14 downto 0);
 	dec: Decoder port map (instruction_word=>IW, control_word=>control_out, Rs1=>Rs1_sig, Rs2=>Rs2, Rd=>Rd_sig, CZ_depend=>CZ_depend);
-	is_LMSM<=control_out(19) or control_out(18);
+	is_LMSM<=(control_out(19) or control_out(18)) and temp_PE_Flag;
 	PE_input_MUX: generic_mux_2to1 generic map(data_width=>8) port map (input0=>IW(7 downto 0), input1=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
 
 	--PE_input_MUX: mux_2to1 port map(input1=>IW(7 downto 0), input2=>PE_input, select_signal=>PE_input_sel, output0=>PE_input_sig);
-	PE_LM_SM: special_pe port map(input0=>PE_input_sig, output0=>PE_out, Flag=>PE_Flag, Rsel=>Rsel_sig);
+	PE_LM_SM: special_pe port map(input0=>PE_input_sig, output0=>PE_out, Flag=>temp_PE_Flag, Rsel=>Rsel_sig);
+	PE_Flag <= temp_PE_Flag;
 	Rs1_MUX: generic_mux_2to1 generic map (data_width=>3) port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));
 
 --	Rs1_MUX: mux_2to1 port map(input0=>Rs1_sig, input1=>Rsel_sig, output0=>Rs1, select_signal=>control_out(19));

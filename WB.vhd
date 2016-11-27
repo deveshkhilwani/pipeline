@@ -25,7 +25,7 @@ end entity;
 architecture arch of WB is
 
 	signal c_in,z_in: std_logic_vector(0 downto 0);
-	constant c0: std_logic_vector(0 downto 0) := (others => '0');
+	signal c_enable,z_enable:std_logic;
 
 	
 begin
@@ -35,7 +35,10 @@ begin
 
 	c_in(0) <= flag_out(1) and (not reset);
 	z_in(0) <= flag_out(0) and (not reset);
-	CY_Flag: DataRegister generic map (data_width=>1) port map(Din=>c_in, Dout=>global_flag_out(1 downto 1), Enable=>flag_write(1), clk=>clk);
-	Z_Flag: DataRegister generic map (data_width=>1) port map(Din=>z_in, Dout=>global_flag_out(0 downto 0), Enable=>flag_write(0), clk=>clk);
+	c_enable <= flag_write(1) or reset;
+	z_enable <= flag_write(0) or reset;
+
+	CY_Flag: DataRegister generic map (data_width=>1) port map(Din=>c_in, Dout=>global_flag_out(1 downto 1), Enable=>c_enable, clk=>clk);
+	Z_Flag: DataRegister generic map (data_width=>1) port map(Din=>z_in, Dout=>global_flag_out(0 downto 0), Enable=>z_enable, clk=>clk);
 
 end architecture ; -- arch

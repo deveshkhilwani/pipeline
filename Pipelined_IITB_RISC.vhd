@@ -129,7 +129,7 @@ begin
 
 	RRead: RR port map (RF_write=>new_RF_write, reg_file_A1=>ID_RR_out(57 downto 55), reg_file_A2=>ID_RR_out(54 downto 52), reg_file_A3=>WB_Rd, 
 						reg_file_D3=>WB_FWD, ex_data=>EX_FWD, mem_data=>MEM_FWD, wb_data=>WB_FWD, incremented_PC=>ID_RR_out(16 downto 1), 
-						input1_mux_sel=>data_select1, input2_mux_sel=>data_select2, is_LMSM=>RR_EX_out(16),--is_LMSM
+						input1_mux_sel=>data_select1, input2_mux_sel=>data_select2, is_LMSM=>ID_RR_out(0),--is_LMSM
 						LMSM_memaddress_in=>RR_EX_out(15 downto 0), --RA+1
 						alu_a_input=>alu_a_input,
 						alu_b_input=>alu_b_input, LMSM_memaddress_out=>LMSM_memaddress_out,reset=>reset,clk=>clk);
